@@ -321,7 +321,7 @@ body {
 }
 .hands-overlay-screen.connecting .tap-guide-prompt { display: none !important; }
 
-/* INVITATION CONTAINER - Added Double Gold Trim */
+/* INVITATION CONTAINER */
 .invitation-container {
   width: 100%;
   max-width: 490px;
@@ -333,36 +333,63 @@ body {
   border: 4px double #DFC394;
 }
 
-/* CARD INNER - Enhanced Double Background Pattern For Zero Stretching */
+/* CARD INNER - TOP/BOTTOM CLUSTERS + CONTINUOUS SIDE VINES */
 .card-inner {
   position: relative;
   background-color: #FFFDF9;
-  /* Layers Top and Bottom floral cluster images independently without warping the graphics */
   background-image: 
-    url('floral-border.png'), 
-    url('floral-border.png');
-  background-repeat: no-repeat, no-repeat;
-  background-position: top center, bottom center;
-  background-size: 100% auto, 100% auto;
-  padding: 155px 24px 155px; /* Deep top/bottom padding preserves image spaces while central elements scale */
+    url('floral-border.png'),
+    url('floral-border.png'),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 80' width='20' height='80'%3E%3Cpath d='M10 0 Q14 20 10 40 Q6 60 10 80' fill='none' stroke='%23C59A3F' stroke-width='0.6' opacity='0.35'/%3E%3Cellipse cx='6' cy='18' rx='3.5' ry='6' fill='%236A8A6D' opacity='0.6' transform='rotate(-30 6 18)'/%3E%3Cellipse cx='14' cy='36' rx='3' ry='5.5' fill='%238E6A26' opacity='0.45' transform='rotate(30 14 36)'/%3E%3Ccircle cx='15' cy='52' r='2.2' fill='%23851329' opacity='0.55'/%3E%3Cellipse cx='6' cy='65' rx='3.5' ry='6' fill='%236A8A6D' opacity='0.5' transform='rotate(-25 6 65)'/%3E%3Ccircle cx='10' cy='78' r='1.2' fill='%23D4AF37' opacity='0.7'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 80' width='20' height='80'%3E%3Cpath d='M10 0 Q6 20 10 40 Q14 60 10 80' fill='none' stroke='%23C59A3F' stroke-width='0.6' opacity='0.35'/%3E%3Cellipse cx='14' cy='18' rx='3.5' ry='6' fill='%236A8A6D' opacity='0.6' transform='rotate(30 14 18)'/%3E%3Cellipse cx='6' cy='36' rx='3' ry='5.5' fill='%238E6A26' opacity='0.45' transform='rotate(-30 6 36)'/%3E%3Ccircle cx='5' cy='52' r='2.2' fill='%23851329' opacity='0.55'/%3E%3Cellipse cx='14' cy='65' rx='3.5' ry='6' fill='%236A8A6D' opacity='0.5' transform='rotate(25 14 65)'/%3E%3Ccircle cx='10' cy='78' r='1.2' fill='%23D4AF37' opacity='0.7'/%3E%3C/svg%3E");
+  background-repeat: 
+    no-repeat, 
+    no-repeat, 
+    repeat-y, 
+    repeat-y;
+  background-position: 
+    top center, 
+    bottom center, 
+    left 3px top 0, 
+    right 3px top 0;
+  background-size: 
+    100% auto, 
+    100% auto, 
+    18px 80px, 
+    18px 80px;
+  padding: 145px 26px 145px;
   overflow: hidden;
 }
 
-/* Elegant Royal Borders overlay to frame text nicely */
-.card-inner::after {
+/* OUTER SLENDER GOLD LINE */
+.card-inner::before {
   content: "";
   position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-  border: 1px solid rgba(197, 154, 63, 0.25);
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  border: 1.5px solid #DFC394;
   border-radius: 20px;
   pointer-events: none;
   z-index: 1;
 }
 
-/* Force-hide repetitive SVG legacy graphics */
+/* INNER FINE GOLD LINE */
+.card-inner::after {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: 19px;
+  right: 19px;
+  bottom: 19px;
+  border: 1px solid rgba(197, 154, 63, 0.35);
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* HIDE OLD TORANAM & SIDE MARIGOLDS */
 .top-toranam,
 .garland-side {
   display: none !important;
