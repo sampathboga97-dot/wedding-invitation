@@ -329,26 +329,22 @@ body {
   border-radius: 30px;
   overflow: hidden;
   box-shadow: 0 24px 70px rgba(78, 48, 14, 0.22);
-  background: #FFFFFF;
-  border: 2px solid var(--gold-border);
+  background: #FFFDF9;
+  border: 1.5px solid #DFC394;
 }
 .card-inner {
   position: relative;
-  background: #FFFDF9;
-  padding: 40px 18px 32px;
+  background-color: #FFFDF9;
+  background-image: url('watermarked_img_8708218087442083564.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  padding: 48px 26px 36px;
   overflow: hidden;
 }
+/* Remove or hide the old inner dashed line */
 .card-inner::after {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  border: 1.5px dashed #DFC394;
-  border-radius: 22px;
-  pointer-events: none;
-  z-index: 1;
+  display: none;
 }
 
 .top-toranam {
@@ -747,4 +743,8 @@ body {
   background: var(--maroon-primary);
   color: #FFF;
   border-color: #FFD700;
+}
+.top-toranam,
+.garland-side {
+  display: none;
 }
