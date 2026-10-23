@@ -761,14 +761,16 @@ function generatePersonalizedAdminLink() {
   const nameEl = document.getElementById('adminGuestName');
   const sideEl = document.getElementById('adminSideSelect');
   const name = nameEl ? nameEl.value.trim() : "";
-  const side = sideEl ? sideEl.value : "groom";
+  const side = sideEl ? sideEl.value : "groom"; // 'groom' or 'bride'
 
   if (!name) {
     alert("Please enter the guest's name (e.g. Kishore Mama)");
     return;
   }
+
+  // Base URL without query params or hashes
   const cleanBase = window.location.origin + window.location.pathname;
-  const finalUrl = `${cleanBase}?guest=${encodeURIComponent(name)}&side=${side}`;
+  const finalUrl = `${cleanBase}?guest=${encodeURIComponent(name)}&side=${encodeURIComponent(side)}`;
 
   const outContainer = document.getElementById('adminOutputContainer');
   const resInput = document.getElementById('adminResultInput');
@@ -839,14 +841,25 @@ function applyPersonalizedUrlParams() {
   const guestName = params.get('guest');
   const sideParam = params.get('side');
 
-  if (sideParam && (sideParam === 'bride' || sideParam === 'groom')) {
-    selectedSide = sideParam;
-    const modal = document.getElementById('sidePickerModal');
-    if (modal) modal.classList.add('closed');
+  // 1. If side parameter exists ('groom' or 'bride'), assign it strictly
+  if (sideParam && (sideParam.toLowerCase() === 'groom' || sideParam.toLowerCase() === 'bride')) {
+    selectedSide = sideParam.toLowerCase();
+    
+    // Also keep the admin generator dropdown matched
     const sideSelect = document.getElementById('adminSideSelect');
-    if (sideSelect) sideSelect.value = sideParam;
+    if (sideSelect) sideSelect.value = selectedSide;
   }
 
+  // 2. Render names & parents right away based on the selected side
+  renderSideAndNames();
+
+  // 3. Keep the side picker modal OPEN so the guest sees the choice screen
+  const modal = document.getElementById('sidePickerModal');
+  if (modal) {
+    modal.classList.remove('closed'); // Ensure it is visible to the guest
+  }
+
+  // 4. If guest name is provided, display personalized welcome badge
   if (guestName) {
     const badge = document.getElementById('personalizedGuestBadge');
     if (badge) {
