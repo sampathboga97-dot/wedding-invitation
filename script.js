@@ -831,7 +831,6 @@ function applyPersonalizedUrlParams() {
     if (adminInput) adminInput.value = guestName;
   }
 }
-}
 
 /* --- Complete Official Invitation Card Generator --- */
 function generateAndDownloadInvitationCard() {
