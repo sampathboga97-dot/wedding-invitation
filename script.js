@@ -790,56 +790,202 @@ function applyPersonalizedUrlParams() {
   }
 }
 
-/* --- Card Graphic Generator --- */
+/* --- Complete Official Invitation Card Generator --- */
 function generateAndDownloadInvitationCard() {
   const canvas = document.getElementById('officialInviteCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W = canvas.width;
-  const H = canvas.height;
+  const W = 900;
+  const H = 1680;
+  canvas.width = W;
+  canvas.height = H;
   const isTe = (currentLang === 'te');
 
-  const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 100, W / 2, H / 2, 900);
-  bgGrad.addColorStop(0, '#FFFDF8');
-  bgGrad.addColorStop(0.7, '#FDF6E9');
+  // Background
+  const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 80, W / 2, H / 2, 950);
+  bgGrad.addColorStop(0, '#FFFDF9');
+  bgGrad.addColorStop(0.65, '#FDF6E9');
   bgGrad.addColorStop(1, '#F7E7CD');
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, W, H);
 
-  ctx.lineWidth = 18;
+  // Outer Border & Dual Gold Framing
+  ctx.lineWidth = 14;
   ctx.strokeStyle = '#851329';
-  ctx.strokeRect(30, 30, W - 60, H - 60);
+  ctx.strokeRect(26, 26, W - 52, H - 52);
 
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = 2.5;
   ctx.strokeStyle = '#C59A3F';
-  ctx.strokeRect(48, 48, W - 96, H - 96);
+  ctx.strokeRect(44, 44, W - 88, H - 88);
 
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(197, 154, 63, 0.45)';
+  ctx.strokeRect(52, 52, W - 104, H - 104);
+
+  // Header Shloka
   ctx.textAlign = 'center';
-  ctx.font = 'bold 26px "Noto Sans Telugu", sans-serif';
+  ctx.font = 'bold 24px "Noto Sans Telugu", sans-serif';
   ctx.fillStyle = '#851329';
-  ctx.fillText('||  శ్రీరస్తు - శుభమస్తు - అవిఘ్నమస్తు  ||', W / 2, 130);
+  ctx.fillText('||  శ్రీరస్తు - శుభమస్తు - అవిఘ్నమస్తు  ||', W / 2, 115);
+
+  ctx.font = 'bold 20px "Cinzel", serif';
+  ctx.fillStyle = '#8E6A26';
+  ctx.fillText(isTe ? 'వివాహ మహోత్సవ ఆహ్వాన పత్రిక' : 'WEDDING INVITATION', W / 2, 155);
+
+  ctx.font = '32px sans-serif';
+  ctx.fillText('🏺', W / 2, 205);
+
+  // Couple Names
+  if (isTe) {
+    ctx.font = 'bold 74px "Suranna", "Noto Sans Telugu", serif';
+    ctx.fillStyle = '#851329';
+    ctx.fillText('సారిక & సంపత్', W / 2, 305);
+  } else {
+    ctx.font = 'bold 84px "Great Vibes", cursive, serif';
+    ctx.fillStyle = '#851329';
+    ctx.fillText('Sarika & Sampath', W / 2, 305);
+  }
 
   ctx.font = 'bold 22px "Cinzel", serif';
   ctx.fillStyle = '#8E6A26';
-  ctx.fillText(isTe ? 'వివాహ మహోత్సవ ఆహ్వాన పత్రిక' : 'WEDDING INVITATION', W / 2, 175);
+  ctx.fillText('#SamRika', W / 2, 360);
 
-  ctx.font = '36px sans-serif';
-  ctx.fillText('🏺', W / 2, 225);
+  // Invite Lead Text
+  ctx.font = 'italic 22px "Playfair Display", serif';
+  ctx.fillStyle = '#5A4632';
+  ctx.fillText(
+    isTe ? 'మా వివాహ మహోత్సవానికి మిమ్మల్ని సాదరంగా ఆహ్వానిస్తున్నాము' : 'Cordially invite you to celebrate our auspicious wedding',
+    W / 2, 
+    410
+  );
 
-  if (isTe) {
-    ctx.font = 'bold 78px "Suranna", "Noto Sans Telugu", serif';
+  // Divider Line
+  ctx.strokeStyle = '#D4AF37';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(180, 440);
+  ctx.lineTo(720, 440);
+  ctx.stroke();
+
+  // Grandparents (If Groom Side Selected)
+  let curY = 490;
+  if (selectedSide === 'groom') {
+    ctx.font = 'bold 16px "Cinzel", serif';
     ctx.fillStyle = '#851329';
-    ctx.fillText('సారిక & సంపత్', W / 2, 320);
-  } else {
-    ctx.font = 'bold 88px "Great Vibes", cursive, serif';
-    ctx.fillStyle = '#851329';
-    ctx.fillText('Sarika & Sampath', W / 2, 320);
+    ctx.fillText(isTe ? 'దివ్య ఆశీస్సులతో' : 'WITH THE ETERNAL BLESSINGS OF GRANDPARENTS', W / 2, curY);
+    curY += 30;
+    ctx.font = 'bold 21px "Playfair Display", serif';
+    ctx.fillStyle = '#2F2620';
+    ctx.fillText('Late Smt. Boga Narsamma & Late Sri Boga Shivalingam', W / 2, curY);
+    curY += 45;
   }
 
-  ctx.font = 'bold 24px "Cinzel", serif';
+  // Parents Section
+  ctx.font = 'bold 18px "Cinzel", serif';
   ctx.fillStyle = '#8E6A26';
-  ctx.fillText('#SamRika', W / 2, 375);
+  ctx.fillText(isTe ? 'పెద్దల ఆశీస్సులతో' : 'WITH THE BLESSINGS OF OUR PARENTS', W / 2, curY);
+  curY += 40;
 
+  // Bride's Parents Box
+  ctx.fillStyle = 'rgba(254, 236, 231, 0.7)';
+  ctx.strokeStyle = '#E5907E';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(140, curY, W - 280, 85, 14);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.font = 'bold 15px "Cinzel", serif';
+  ctx.fillStyle = '#851329';
+  ctx.fillText(isTe ? "వధువు తల్లిదండ్రులు" : "BRIDE'S PARENTS", W / 2, curY + 28);
+  ctx.font = 'bold 20px "Playfair Display", serif';
+  ctx.fillStyle = '#2F2620';
+  ctx.fillText('Deshaboina Venkateshwara Prabhu & Mrs. Sharadamba', W / 2, curY + 62);
+  curY += 105;
+
+  // Groom's Parents Box
+  ctx.fillStyle = 'rgba(254, 244, 205, 0.7)';
+  ctx.strokeStyle = '#C89B2B';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(140, curY, W - 280, 85, 14);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.font = 'bold 15px "Cinzel", serif';
+  ctx.fillStyle = '#7A570D';
+  ctx.fillText(isTe ? "వరుని తల్లిదండ్రులు" : "GROOM'S PARENTS", W / 2, curY + 28);
+  ctx.font = 'bold 20px "Playfair Display", serif';
+  ctx.fillStyle = '#2F2620';
+  ctx.fillText('Boga Ashok & Mrs. Geetha', W / 2, curY + 62);
+  curY += 125;
+
+  // MUHURTHAM SECTION
+  ctx.font = 'bold 28px "Cinzel", serif';
+  ctx.fillStyle = '#851329';
+  ctx.fillText(isTe ? 'సుముహూర్తం' : 'MUHURTHAM', W / 2, curY);
+  curY += 36;
+
+  ctx.font = 'bold 26px "Playfair Display", serif';
+  ctx.fillStyle = '#241C16';
+  ctx.fillText(isTe ? 'గురువారం, 26 నవంబర్ 2026' : 'Thursday, 26 November 2026', W / 2, curY);
+  curY += 40;
+
+  ctx.font = 'bold 36px "Cinzel", serif';
+  ctx.fillStyle = '#851329';
+  ctx.fillText(isTe ? 'ఉదయం 9:15 గంటలకు' : '9:15 AM', W / 2, curY);
+  curY += 45;
+
+  // Kalyanam Venue Box
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+  ctx.strokeStyle = '#C89B2B';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(110, curY, W - 220, 105, 16);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.font = 'bold 24px "Cinzel", serif';
+  ctx.fillStyle = '#851329';
+  ctx.fillText('VIP Gardens, Suraram', W / 2, curY + 40);
+  ctx.font = '17px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = '#5A4632';
+  ctx.fillText('Suraram Village Rd, Lakshmi Nagar Colony, Suraram, Hyderabad', W / 2, curY + 74);
+  curY += 145;
+
+  // GRAND RECEPTION SECTION
+  ctx.font = 'bold 26px "Cinzel", serif';
+  ctx.fillStyle = '#7A570D';
+  ctx.fillText(isTe ? 'రిసెప్షన్ వేడుక' : 'GRAND RECEPTION', W / 2, curY);
+  curY += 34;
+
+  ctx.font = 'bold 24px "Playfair Display", serif';
+  ctx.fillStyle = '#241C16';
+  ctx.fillText(isTe ? 'శుక్రవారం, 27 నవంబర్ 2026 - సాయంత్రం 7:00 నుండి' : 'Friday, 27 November 2026 • From 7:00 PM Onwards', W / 2, curY);
+  curY += 42;
+
+  // Reception Venue Box
+  ctx.fillStyle = 'rgba(255, 253, 245, 0.9)';
+  ctx.strokeStyle = '#8E6A26';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(110, curY, W - 220, 95, 16);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.font = 'bold 23px "Cinzel", serif';
+  ctx.fillStyle = '#7A570D';
+  ctx.fillText('Thumma Gardens, Singarajpalle', W / 2, curY + 38);
+  ctx.font = '17px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = '#5A4632';
+  ctx.fillText('Jangaon - Suryapet Road, Singarajpalle, Telangana', W / 2, curY + 70);
+
+  // Footer Blessing
+  ctx.font = 'italic 20px "Playfair Display", serif';
+  ctx.fillStyle = '#851329';
+  ctx.fillText('Your gracious presence and blessings are our greatest gift ❤️', W / 2, H - 75);
+
+  // Trigger Download
   const link = document.createElement('a');
   link.download = `Wedding_Invitation_Sarika_Sampath.png`;
   link.href = canvas.toDataURL('image/png');
