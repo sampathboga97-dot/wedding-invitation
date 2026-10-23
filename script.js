@@ -718,10 +718,16 @@ function switchAudioTrack(trackFile, el) {
   if (el) el.classList.add('active-track');
 }
 
-/* --- Admin Personalized Link Generator Modal --- */
+// Secret Admin PIN Protection
 function openAdminModal() {
-  const m = document.getElementById('adminModal');
-  if (m) m.classList.remove('closed');
+  const enteredPin = prompt("🔒 Enter Admin Security PIN:");
+  
+  if (enteredPin === "3010") {
+    const m = document.getElementById('adminModal');
+    if (m) m.classList.remove('closed');
+  } else if (enteredPin !== null) {
+    alert("❌ Incorrect PIN. Access denied.");
+  }
 }
 function closeAdminModal() {
   const m = document.getElementById('adminModal');
