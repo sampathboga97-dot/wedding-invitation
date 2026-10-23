@@ -1061,3 +1061,20 @@ body {
     animation: none !important;
   }
 }
+/* KALYANAM VENUE HIGHLIGHT BOX */
+.venue-highlight-frame {
+  background: radial-gradient(circle at center, #FFFDF8 0%, #FAF0D8 100%);
+  border: 2px solid #C89B2B;
+  border-radius: 18px;
+  padding: 14px 12px;
+  margin: 12px auto 14px;
+  max-width: 360px;
+  box-shadow: 0 4px 14px rgba(142, 106, 38, 0.12);
+}
+
+.venue-inner-border {
+  border: 1.2px dashed #DFC394;
+  border-radius: 12px;
+  padding: 10px 8px;
+  background: rgba(255, 255, 255, 0.65);
+}
