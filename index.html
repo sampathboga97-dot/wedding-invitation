@@ -337,7 +337,7 @@
           </div>
         </div>
 
-        <!-- 2. KALYANAM VENUE -->
+      <!-- 2. KALYANAM VENUE -->
         <div class="event-card">
           <div class="event-img-wrap" style="height: 210px;">
             <img src="temple.jpeg" alt="VIP Gardens" onerror="handleImgError(this, 'temple')">
@@ -368,21 +368,37 @@
             </a>
           </div>
 
-          <!-- Nearby Stays -->
-          <button class="stay-accordion-toggle" onclick="toggleAccordion('kalyanamStays')">
+          <!-- ============================================== -->
+          <!-- PASTE YOUR DYNAMIC STAYS ACCORDION RIGHT HERE: -->
+          <!-- ============================================== -->
+          <button class="stay-accordion-toggle" onclick="toggleAccordionWithAutoFetch('kalyanamStays', 17.5332, 78.4385, 'Suraram')">
             <span>🏨 Nearby Stays &amp; Hotels</span>
             <span>▼</span>
           </button>
           <div class="stay-accordion-content" id="kalyanamStays">
-            <div class="stay-item">
-              <div class="stay-name">Hotel Swagath Residency</div>
-              <div class="stay-meta">Near Jeedimetla / Suraram (2.5 km away) • Ph: +91 98480 12345</div>
+            <div class="stay-loading" id="kalyanamStaysList">
+              <span class="stay-spinner">🔄</span> Finding nearby hotels around Suraram...
             </div>
-            <div class="stay-item">
-              <div class="stay-name">Super Hotel O Suraram Main Rd</div>
-              <div class="stay-meta">AC Family Rooms • Ph: +91 99890 54321</div>
+            <div style="margin-top: 10px; text-align: center;">
+              <a class="stay-all-btn" target="_blank" href="https://www.google.com/maps/search/Hotels+near+VIP+Gardens+Suraram+Hyderabad">
+                🔍 Open in Google Maps Directory
+              </a>
             </div>
           </div>
+
+          <!-- Logistics Support -->
+          <div style="margin-top: 10px;">
+            <button class="help-drawer-pill" onclick="toggleAccordion('kalyanamContacts')">
+              📞 Need assistance reaching the venue?
+            </button>
+            <div class="stay-accordion-content" id="kalyanamContacts">
+              <div class="emergency-call-row">
+                <a class="call-btn" href="tel:+917675975990">📞 Call Sampath</a>
+                <a class="call-btn" style="background:#8E6A26;" href="tel:+919848011223">📞 Family Help</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
           <!-- Logistics Support -->
           <div style="margin-top: 10px;">
