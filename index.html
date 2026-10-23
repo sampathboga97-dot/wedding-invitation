@@ -680,6 +680,7 @@
         <!-- ============================================== -->
         <!-- RSVP Live Dashboard for Admin PASTE HERE:      -->
         <!-- ============================================== -->
+       <!-- RSVP Live Dashboard for Admin with Side Tabs -->
         <hr style="border: none; border-top: 1px dashed #DFC394; margin: 18px 0 14px 0;">
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -691,33 +692,40 @@
           </button>
         </div>
 
+        <!-- Filter Tabs: All, Groom, Bride -->
+        <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+          <button type="button" id="tabRsvpAll" onclick="filterRsvpView('all')" style="flex:1; padding: 5px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #851329; background: #851329; color: #FFF; cursor: pointer;">
+            All
+          </button>
+          <button type="button" id="tabRsvpGroom" onclick="filterRsvpView('groom')" style="flex:1; padding: 5px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #DFC394; background: #FFF9EC; color: #7A570D; cursor: pointer;">
+            👑 Groom (<span id="groomGuestsCount">0</span>)
+          </button>
+          <button type="button" id="tabRsvpBride" onclick="filterRsvpView('bride')" style="flex:1; padding: 5px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #DFC394; background: #FFF9EC; color: #851329; cursor: pointer;">
+            👸 Bride (<span id="brideGuestsCount">0</span>)
+          </button>
+        </div>
+
         <!-- Headcount Summary Pills -->
         <div id="rsvpSummaryRow" style="display: flex; gap: 6px; margin-bottom: 10px; font-size: 0.72rem; font-weight: 700;">
           <div style="flex: 1; background: #FFF7E6; border: 1px solid #DFC394; border-radius: 6px; padding: 4px; text-align: center; color: #7A570D;">
-            Total: <span id="totalRsvpCount">0</span>
+            Entries: <span id="totalRsvpCount">0</span>
           </div>
           <div style="flex: 1; background: #E8F5E9; border: 1px solid #A5D6A7; border-radius: 6px; padding: 4px; text-align: center; color: #2E7D32;">
-            Guests: <span id="totalGuestsSum">0</span>
+            Total Attending: <span id="totalGuestsSum">0</span>
           </div>
         </div>
 
         <!-- Scrollable Guest List Container -->
-        <div id="adminRsvpList" style="max-height: 220px; overflow-y: auto; background: #FFFDF9; border: 1px solid #E5D6BA; border-radius: 8px; padding: 6px; font-size: 0.78rem;">
+        <div id="adminRsvpList" style="max-height: 200px; overflow-y: auto; background: #FFFDF9; border: 1px solid #E5D6BA; border-radius: 8px; padding: 6px; font-size: 0.78rem;">
           <div style="text-align: center; color: #8C7355; padding: 10px;">Loading RSVPs...</div>
         </div>
 
-        <!-- Close Button -->
-        <button type="button" class="side-choice-btn" style="margin-top:10px; justify-content:center;" onclick="closeAdminModal()">
+        <!-- ONLY ONE Close Button at the bottom -->
+        <button type="button" class="side-choice-btn" style="margin-top:12px; justify-content:center;" onclick="closeAdminModal()">
           Close
         </button>
       </div>
     </div>
-        <button type="button" class="side-choice-btn" style="margin-top:10px; justify-content:center;" onclick="closeAdminModal()">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
 
   <canvas id="officialInviteCanvas" width="900" height="1680" style="display:none;"></canvas>
   <canvas id="blessingCanvas" width="900" height="1200" style="display:none;"></canvas>
