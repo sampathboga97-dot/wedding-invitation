@@ -873,11 +873,12 @@ function applyPersonalizedUrlParams() {
     if (adminInput) adminInput.value = guestName;
   }
 }
-/* --- Admin RSVP Dashboard Engine --- */
+/* --- Admin RSVP Dashboard with Side Separation --- */
+let rawRsvpList = [];
+let currentRsvpFilter = 'all';
+
 async function loadAdminRsvps() {
   const container = document.getElementById('adminRsvpList');
-  const countEl = document.getElementById('totalRsvpCount');
-  const sumEl = document.getElementById('totalGuestsSum');
   if (!container) return;
 
   container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 8px;">🔄 Fetching responses...</div>`;
@@ -887,43 +888,101 @@ async function loadAdminRsvps() {
     const data = await res.json();
 
     if (!data) {
-      container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 8px;">No RSVPs submitted yet.</div>`;
-      if (countEl) countEl.innerText = "0";
-      if (sumEl) sumEl.innerText = "0";
+      rawRsvpList = [];
+      renderFilteredRsvps();
       return;
     }
 
-    const rsvpArray = Object.values(data).reverse();
-    let totalHeadcount = 0;
-
-    const itemsHtml = rsvpArray.map(item => {
-      const guests = parseInt(item.guestsCount) || 1;
-      totalHeadcount += guests;
-
-      const sideBadge = (item.side === 'groom')
-        ? `<span style="background:#FFF3CD; color:#856404; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">Groom</span>`
-        : `<span style="background:#F8D7DA; color:#721C24; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">Bride</span>`;
-
-      return `
-        <div style="border-bottom: 1px dashed #DFC394; padding: 6px 2px; text-align: left;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <strong style="color: #851329;">${escapeHtml(item.name || 'Guest')}</strong>
-            <div>${sideBadge} <span style="background:#E2E3E5; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👥 ${guests}</span></div>
-          </div>
-          <div style="font-size: 0.7rem; color: #5A4632; margin-top: 2px;">
-            📍 ${escapeHtml(item.attendance || 'Attending')}
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    container.innerHTML = itemsHtml;
-    if (countEl) countEl.innerText = rsvpArray.length;
-    if (sumEl) sumEl.innerText = totalHeadcount;
+    rawRsvpList = Object.values(data).reverse();
+    renderFilteredRsvps();
 
   } catch (err) {
     container.innerHTML = `<div style="text-align: center; color: #C62828; padding: 8px;">Failed to load responses.</div>`;
   }
+}
+
+function filterRsvpView(filterType) {
+  currentRsvpFilter = filterType;
+
+  // Button styling states
+  const allBtn = document.getElementById('tabRsvpAll');
+  const groomBtn = document.getElementById('tabRsvpGroom');
+  const brideBtn = document.getElementById('tabRsvpBride');
+
+  const defaultStyle = "flex:1; padding: 5px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #DFC394; background: #FFF9EC; color: #5C3A10; cursor: pointer;";
+  const activeStyle = "flex:1; padding: 5px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #851329; background: #851329; color: #FFF; cursor: pointer;";
+
+  if (allBtn) allBtn.style.cssText = filterType === 'all' ? activeStyle : defaultStyle;
+  if (groomBtn) groomBtn.style.cssText = filterType === 'groom' ? activeStyle : defaultStyle;
+  if (brideBtn) brideBtn.style.cssText = filterType === 'bride' ? activeStyle : defaultStyle;
+
+  renderFilteredRsvps();
+}
+
+function renderFilteredRsvps() {
+  const container = document.getElementById('adminRsvpList');
+  const countEl = document.getElementById('totalRsvpCount');
+  const sumEl = document.getElementById('totalGuestsSum');
+  const groomCountEl = document.getElementById('groomGuestsCount');
+  const brideCountEl = document.getElementById('brideGuestsCount');
+
+  if (!container) return;
+
+  // Track overall stats by side
+  let groomHeadcount = 0;
+  let brideHeadcount = 0;
+
+  rawRsvpList.forEach(item => {
+    const count = parseInt(item.guestsCount) || 1;
+    if (item.side === 'groom') {
+      groomHeadcount += count;
+    } else {
+      brideHeadcount += count;
+    }
+  });
+
+  if (groomCountEl) groomCountEl.innerText = groomHeadcount;
+  if (brideCountEl) brideCountEl.innerText = brideHeadcount;
+
+  // Filter based on active selection tab
+  const displayList = rawRsvpList.filter(item => {
+    if (currentRsvpFilter === 'all') return true;
+    return (item.side || 'groom').toLowerCase() === currentRsvpFilter;
+  });
+
+  if (displayList.length === 0) {
+    container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 10px;">No RSVPs for this selection.</div>`;
+    if (countEl) countEl.innerText = "0";
+    if (sumEl) sumEl.innerText = "0";
+    return;
+  }
+
+  let visibleHeadcount = 0;
+
+  const html = displayList.map(item => {
+    const count = parseInt(item.guestsCount) || 1;
+    visibleHeadcount += count;
+
+    const sideBadge = (item.side === 'groom')
+      ? `<span style="background:#FFF3CD; color:#856404; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👑 Groom</span>`
+      : `<span style="background:#F8D7DA; color:#721C24; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👸 Bride</span>`;
+
+    return `
+      <div style="border-bottom: 1px dashed #DFC394; padding: 6px 2px; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong style="color: #851329;">${escapeHtml(item.name || 'Guest')}</strong>
+          <div>${sideBadge} <span style="background:#E2E3E5; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👥 ${count}</span></div>
+        </div>
+        <div style="font-size: 0.7rem; color: #5A4632; margin-top: 2px;">
+          📍 ${escapeHtml(item.attendance || 'Attending')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = html;
+  if (countEl) countEl.innerText = displayList.length;
+  if (sumEl) sumEl.innerText = visibleHeadcount;
 }
 /* --- Card Graphic Generator --- */
 function generateAndDownloadInvitationCard() {
