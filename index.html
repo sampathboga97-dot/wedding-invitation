@@ -4,19 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Wedding Ceremony | Sarika &amp; Sampath</title>
-  <meta name="description" content="Wedding Ceremony of Sarika &amp; Sampath on Thursday, November 26, 2026 at Hyderabad.">
+  <meta name="description" content="Wedding Ceremony of Sarika &amp; Sampath on Thursday, November 26, 2026.">
 
   <!-- OpenGraph / Social Share Meta Tags -->
   <meta property="og:title" content="Wedding Invitation | Sarika &amp; Sampath">
-  <meta property="og:description" content="Join us in celebrating our wedding ceremony on Thursday, 26 November 2026.">
+  <meta property="og:description" content="Namaste! You are cordially invited to celebrate our auspicious wedding ceremony. Sarika & Sampath ❤️">
   <meta property="og:image" content="couple-ceremony.jpg">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#851329">
 
-  <!-- Progressive Web App (PWA) Manifest -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Fonts & Confetti Library -->
+  <!-- Fonts & Confetti -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700;800&family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@500;600;700;800&family=Suranna&display=swap" rel="stylesheet">
@@ -81,6 +78,9 @@
 
   <!-- FLOATING BOTTOM CONTROLS -->
   <div class="bottom-floating-controls">
+    <button class="floating-circle-btn" onclick="openAdminModal()" title="Admin Link Generator">
+      🔑
+    </button>
     <button class="floating-circle-btn" onclick="openPlaylistModal()" title="Change Music">
       🎵
     </button>
@@ -114,7 +114,7 @@
           </div>
         </div>
 
-        <!-- DYNAMIC PERSONALIZED GUEST CHIP (Triggered via ?guest=Name) -->
+        <!-- DYNAMIC PERSONALIZED GUEST CHIP -->
         <div id="personalizedGuestBadge" class="personalized-guest-chip" style="display:none;"></div>
 
         <!-- TIME GREETING + WELCOME BANNER -->
@@ -174,7 +174,143 @@
           </div>
         </div>
 
-        <!-- 1. MUHURTHAM EVENT CARD WITH LOGISTICS -->
+        <!-- PRE-WEDDING SHOOT VIDEO SHOWCASE -->
+        <div class="video-showcase-card">
+          <div class="video-showcase-title" data-en="Pre-Wedding Film" data-te="ప్రీ-వెడ్డింగ్ వీడియో గ్లింప్స్">Pre-Wedding Film</div>
+          <div class="video-showcase-sub" data-en="A glimpse into the magical journey of Sarika &amp; Sampath 🎬✨" data-te="సారిక &amp; సంపత్ ల మధుర జ్ఞాపకాలు 🎬✨">A glimpse into the magical journey of Sarika &amp; Sampath 🎬✨</div>
+          <div class="video-embed-box" id="preWeddingVideoContainer">
+            <iframe id="preWeddingIframe" src="" title="Sarika &amp; Sampath Pre-Wedding Film" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:none;"></iframe>
+            <video id="preWeddingLocalVideo" controls playsinline preload="metadata" style="display:none;">
+              <source src="" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-placeholder-state" id="preWeddingPlaceholder">
+              <span style="font-size:38px; line-height:1; margin-bottom:8px;">🎬</span>
+              <div style="font-family:'Cinzel', serif; font-size:1.05rem; font-weight:800; letter-spacing:1px;" data-en="Pre-Wedding Film Coming Soon" data-te="ప్రీ-వెడ్డింగ్ వీడియో త్వరలో రాబోతోంది">Pre-Wedding Film Coming Soon</div>
+              <div style="font-size:0.78rem; opacity:0.85; margin-top:4px;" data-en="Glimpses of our love story will be unveiled here ✨" data-te="మా ప్రేమ ప్రయాణం యొక్క మధుర దృశ్యాలు ఇక్కడ ప్రదర్శించబడతాయి ✨">Glimpses of our love story will be unveiled here ✨</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CELEBRATION TIMELINE -->
+        <div style="margin: 22px 0 10px;">
+          <div class="section-title" data-en="Celebration Timeline" data-te="శుభకార్యాల వివరాలు">Celebration Timeline</div>
+          <div class="upcoming-events-container">
+            <div class="festive-sub-card">
+              <div class="festive-icon-circle bg-pelliko">🪷</div>
+              <div class="festive-details">
+                <span class="badge-coming-soon" data-en="Upcoming Ceremony" data-te="శుభ సమయం">Upcoming Ceremony</span>
+                <div class="festive-title" id="pelliKTitle" data-en="Pelli Koothuru Ceremony" data-te="పెళ్లి కూతురు వేడుక">Pelli Koothuru Ceremony</div>
+                <div class="festive-time" data-en="Tuesday, 24 November 2026" data-te="మంగళవారం, 24 నవంబర్ 2026">Tuesday, 24 November 2026</div>
+                <div class="festive-desc" data-en="Traditional family ceremony &amp; blessings at home" data-te="సంప్రదాయబద్ధంగా జరిగే శుభ వేడుక">Traditional family ceremony &amp; blessings at home</div>
+              </div>
+            </div>
+
+            <div class="festive-sub-card">
+              <div class="festive-icon-circle bg-haldi">💛</div>
+              <div class="festive-details">
+                <span class="badge-coming-soon" data-en="Upcoming Celebration" data-te="ఆహ్వానం">Upcoming Celebration</span>
+                <div class="festive-title" data-en="Sacred Haldi Ceremony (పసుపు వేడుక)" data-te="మంగళకరమైన పసుపు వేడుక (హల్దీ)">Sacred Haldi Ceremony (పసుపు వేడుక)</div>
+                <div class="festive-time" data-en="Wednesday, 25 November 2026" data-te="బుధవారం, 25 నవంబర్ 2026">Wednesday, 25 November 2026</div>
+                <div class="festive-desc" data-en="Celebrate with yellow hues, music &amp; joyful laughter" data-te="పసుపు వర్ణాలతో, ఆనందోత్సాహాలతో సాగే పవిత్ర వేడుక">Celebrate with yellow hues, music &amp; joyful laughter</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- POLAROID FLIP STORY CARDS -->
+        <div class="story-section" id="storySection">
+          <div style="font-family:'Cinzel', serif; font-size:1.2rem; font-weight:800; color:var(--maroon-primary);" data-en="Our Story" data-te="మా ప్రేమ కథ">Our Story</div>
+          <div style="font-size:0.8rem; color:#7A6953; font-style:italic;" data-en="Tap a memory to flip 💫" data-te="జ్ఞాపకాన్ని చూడటానికి తాకండి 💫">Tap a memory to flip 💫</div>
+          
+          <div class="story-grid">
+            <div class="polaroid-card" onclick="flipStoryCard(this)">
+              <div class="polaroid-inner">
+                <div class="polaroid-front">
+                  <img src="story.jpg" alt="The Beginning" onerror="handleImgError(this, 'story')">
+                  <div class="p-caption" data-en="The Beginning 💛" data-te="ప్రారంభం 💛">The Beginning 💛</div>
+                </div>
+                <div class="polaroid-back">
+                  <h4 data-en="Destiny" data-te="విధి">Destiny</h4>
+                  <p data-en="&quot;Two hearts brought together by divine blessings.&quot;" data-te="&quot;దైవ ఆశీస్సులతో కలిసిన రెండు హృదయాలు.&quot;">"Two hearts brought together by divine blessings."</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="polaroid-card" onclick="flipStoryCard(this)">
+              <div class="polaroid-inner">
+                <div class="polaroid-front">
+                  <img src="story2.jpg" alt="Courtship" onerror="handleImgError(this, 'story2')">
+                  <div class="p-caption" data-en="Courtship 🌸" data-te="అనుబంధం 🌸">Courtship 🌸</div>
+                </div>
+                <div class="polaroid-back">
+                  <h4 data-en="Together" data-te="కలిసి">Together</h4>
+                  <p data-en="&quot;Every shared laugh turned into our lifelong promise.&quot;" data-te="&quot;ప్రతి నవ్వు జీవితాంతం నిలిచే ఒక వాగ్దానంగా మారింది.&quot;">"Every shared laugh turned into our lifelong promise."</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="polaroid-card" onclick="flipStoryCard(this)">
+              <div class="polaroid-inner">
+                <div class="polaroid-front">
+                  <img src="story3.jpg" alt="Forever" onerror="handleImgError(this, 'story3')">
+                  <div class="p-caption" data-en="Forever 💍" data-te="శాశ్వతం 💍">Forever 💍</div>
+                </div>
+                <div class="polaroid-back">
+                  <h4 data-en="Sacred Union" data-te="ఏడడుగులు">Sacred Union</h4>
+                  <p data-en="&quot;Stepping into the sacred Seven Vows on Nov 26, 2026.&quot;" data-te="&quot;నవంబర్ 26, 2026న ప్రారంభమయ్యే పవిత్ర వైవాహిక బంధం.&quot;">"Stepping into the sacred Seven Vows on Nov 26, 2026."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIGITAL SCRATCH CARD -->
+        <div class="scratch-card-section">
+          <div style="font-family:'Cinzel', serif; font-size:1.1rem; font-weight:800; color:var(--maroon-primary);" data-en="✨ Surprise Scratch Card ✨" data-te="✨ గోల్డ్ స్క్రాచ్ కార్డ్ ✨">✨ Surprise Scratch Card ✨</div>
+          <div style="font-size:0.8rem; color:#7A6953; margin-top:2px;" data-en="Scratch with your finger to reveal our special note!" data-te="మా ప్రత్యేక సందేశాన్ని చూడటానికి స్క్రాచ్ చేయండి!">Scratch with your finger to reveal our special note!</div>
+          
+          <div class="scratch-container" id="scratchContainer">
+            <div class="scratch-secret-message">
+              <h4 data-en="With All Our Hearts" data-te="హృదయపూర్వక ధన్యవాదాలు">With All Our Hearts</h4>
+              <p data-en="&quot;Your presence &amp; blessings are the greatest gift as we begin our forever.&quot; ❤️" data-te="&quot;మా కొత్త ప్రయాణంలో మీ ఆశీస్సులే మాకు కొండంత బలం.&quot; ❤️">"Your presence &amp; blessings are the greatest gift as we begin our forever." ❤️</p>
+            </div>
+            <canvas id="scratchCanvas" width="290" height="130"></canvas>
+          </div>
+        </div>
+
+        <div class="ornate-divider">
+          <span class="divider-line"></span>
+          <span class="divider-icon">🪷</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <!-- DIYA LIGHTING -->
+        <div class="diya-section">
+          <div class="diya-heading" data-en="Light the Sacred Diya" data-te="మంగళ దీపం వెలిగించండి">Light the Sacred Diya</div>
+          <div class="diya-sub" data-en="Touch the lamp to ignite divine blessings for the couple 🪔" data-te="వధూవరుల కొరకు మంగళ దీపాన్ని తాకి వెలిగించండి 🪔">Touch the lamp to ignite divine blessings for the couple 🪔</div>
+          
+          <div class="diya-lamp-box" id="diyaBox" onclick="lightTheDiya()">
+            <div class="diya-aura"></div>
+            <svg viewBox="0 0 100 100" width="62" height="62">
+              <path class="diya-flame" d="M50 12 C44 26 40 38 50 48 C60 38 56 26 50 12 Z" fill="url(#flameGradient)"/>
+              <ellipse class="diya-flame" cx="50" cy="38" rx="4" ry="7" fill="#FFFFFF" opacity="0.8"/>
+              <path d="M24 55 Q50 68 76 55 Q78 68 62 76 L66 88 L34 88 L38 76 Q22 68 24 55 Z" fill="#D4AF37" stroke="#A67C1E" stroke-width="2"/>
+              <ellipse cx="50" cy="55" rx="26" ry="6" fill="#F3D778"/>
+              <ellipse cx="50" cy="55" rx="16" ry="3" fill="#A67C1E"/>
+              <defs>
+                <linearGradient id="flameGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FFF275"/>
+                  <stop offset="45%" stop-color="#FF9F1C"/>
+                  <stop offset="100%" stop-color="#E71D36"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="diya-status-tag" id="diyaStatus" data-en="Touch to light the Diya ✨" data-te="దీపం వెలిగించడానికి తాకండి ✨">Touch to light the Diya ✨</div>
+        </div>
+
+        <!-- 1. MUHURTHAM EVENT CARD -->
         <div class="event-card">
           <div class="event-img-wrap">
             <img src="kalyanam.jpeg" alt="Sita Rama Kalyanam" onerror="handleImgError(this, 'kalyanam')">
@@ -184,7 +320,6 @@
           <div style="font-size: 1.05rem; font-weight:700;" data-en="Thursday, 26 November 2026" data-te="గురువారం, 26 నవంబర్ 2026">Thursday, 26 November 2026</div>
           <div class="event-time-highlight" data-en="9:15 AM" data-te="ఉదయం 9:15 గంటలకు">9:15 AM</div>
 
-          <!-- Add to Calendar Buttons -->
           <div class="calendar-btn-row">
             <a class="cal-btn" target="_blank" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+Ceremony:+Sarika+%26+Sampath&dates=20261126T034500Z/20261126T083000Z&details=Auspicious+Marriage+of+Sarika+%26+Sampath+at+VIP+Gardens,+Suraram,+Hyderabad.&location=VIP+Gardens,+Suraram,+Hyderabad">
               📅 Google Calendar
@@ -194,7 +329,6 @@
             </button>
           </div>
 
-          <!-- Countdown Medals -->
           <div class="countdown-medals" id="countdownMedalsRow">
             <div class="medal-item"><div class="medal-val" id="days">--</div><div class="medal-lbl">Days</div></div>
             <div class="medal-item"><div class="medal-val" id="hours">--</div><div class="medal-lbl">Hours</div></div>
@@ -203,7 +337,7 @@
           </div>
         </div>
 
-       <!-- 2. KALYANAM VENUE & NAVIGATION SWITCHES -->
+        <!-- 2. KALYANAM VENUE -->
         <div class="event-card">
           <div class="event-img-wrap" style="height: 210px;">
             <img src="temple.jpeg" alt="VIP Gardens" onerror="handleImgError(this, 'temple')">
@@ -222,7 +356,6 @@
             Suraram Village, Hyderabad, Telangana 500055
           </div>
 
-          <!-- Multi-App Navigation Switches -->
           <div class="route-actions-grid">
             <a class="route-btn" target="_blank" href="https://maps.google.com/?q=VIP+Gardens+Suraram+Hyderabad">
               <span>📍 Google Maps</span>
@@ -235,7 +368,7 @@
             </a>
           </div>
 
-          <!-- Nearby Stays Accordion -->
+          <!-- Nearby Stays -->
           <button class="stay-accordion-toggle" onclick="toggleAccordion('kalyanamStays')">
             <span>🏨 Nearby Stays &amp; Hotels</span>
             <span>▼</span>
@@ -251,7 +384,7 @@
             </div>
           </div>
 
-          <!-- Key Family Logistics Contact -->
+          <!-- Logistics Support -->
           <div style="margin-top: 10px;">
             <button class="help-drawer-pill" onclick="toggleAccordion('kalyanamContacts')">
               📞 Need assistance reaching the venue?
@@ -298,7 +431,7 @@
             </a>
           </div>
 
-          <!-- Nearby Stays in Jangaon -->
+          <!-- Stays near Reception -->
           <button class="stay-accordion-toggle" onclick="toggleAccordion('receptionStays')">
             <span>🏨 Nearby Stays (Jangaon)</span>
             <span>▼</span>
@@ -311,7 +444,7 @@
           </div>
         </div>
 
-        <!-- 4. DRESS CODE & COLOR PALETTE SUGGESTIONS -->
+        <!-- 4. DRESS CODE & COLOR PALETTE -->
         <div class="feature-card-box">
           <div class="feature-card-title">Dress Code &amp; Color Hues</div>
           <div class="feature-card-sub">Suggested traditional palettes to celebrate together</div>
@@ -365,7 +498,7 @@
           </div>
         </div>
 
-        <!-- 6. LIVE RSVP ATTENDANCE TRACKER -->
+        <!-- 6. RSVP FORM -->
         <div class="feature-card-box">
           <div class="feature-card-title">RSVP &amp; Attendance</div>
           <div class="feature-card-sub">Help our families plan seating &amp; catering accurately 🙏</div>
@@ -389,7 +522,7 @@
           </div>
         </div>
 
-        <!-- TALAMBRALU CEREMONY -->
+        <!-- TALAMBRALU -->
         <div class="talambralu-box">
           <div class="talambralu-title">Talambralu Blessings 🌾</div>
           <div style="font-size:0.8rem; color:#7A6953;">Tap the sacred bowl to shower akshintalu upon the couple</div>
@@ -416,7 +549,7 @@
           </a>
         </div>
 
-        <!-- BLESSINGS COUNTER & INTERACTION -->
+        <!-- BLESSINGS TICKER -->
         <div class="akshintalu-btn-wrap">
           <button class="akshintalu-btn" onclick="showerAkshintalu()">
             🌸 Tap to Shower Akshintalu &amp; Blessings
@@ -491,18 +624,50 @@
           <span>🪈 Divine Nadaswaram</span>
           <span>▶</span>
         </div>
-        <div class="track-option" onclick="switchAudioTrack('shehnai.mp3', this)">
-          <span>🎻 Flute &amp; Shehnai Raga</span>
-          <span>▶</span>
-        </div>
-        <div class="track-option" onclick="switchAudioTrack('kalyanam.mp3', this)">
-          <span>✨ Kalyana Vaibhogame</span>
-          <span>▶</span>
-        </div>
       </div>
       <button type="button" class="side-choice-btn" style="margin-top:14px; justify-content:center;" onclick="closePlaylistModal()">
         Done
       </button>
+    </div>
+  </div>
+
+  <!-- HIDDEN ADMIN LINK GENERATOR MODAL -->
+  <div class="side-picker-modal closed" id="adminModal">
+    <div class="side-picker-card">
+      <div style="font-size: 32px; margin-bottom: 6px;">🔑</div>
+      <div class="side-picker-title">Admin Link Generator</div>
+      <div class="side-picker-sub">Create personalized invite links for relatives</div>
+      
+      <div style="display:flex; flex-direction:column; gap:10px; text-align:left; margin-top:12px;">
+        <label style="font-size:0.8rem; font-weight:700; color:#5C3A10;">Guest Name:</label>
+        <input type="text" id="adminGuestName" class="rsvp-input" placeholder="e.g., Kishore Mama" style="margin-top: -6px;">
+
+        <label style="font-size:0.8rem; font-weight:700; color:#5C3A10;">Inviting Side:</label>
+        <select id="adminSideSelect" class="rsvp-select" style="margin-top: -6px;">
+          <option value="groom">Groom's Side (Boga Family)</option>
+          <option value="bride">Bride's Side (Deshaboina Family)</option>
+        </select>
+
+        <button type="button" class="rsvp-submit-btn" style="margin-top:6px;" onclick="generatePersonalizedAdminLink()">
+          ✨ Generate Link
+        </button>
+
+        <div id="adminOutputContainer" style="display:none; margin-top:8px;">
+          <input type="text" id="adminResultInput" class="rsvp-input" readonly style="font-size:0.75rem; background:#FAF5EB;">
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button type="button" class="cal-btn" style="flex:1;" onclick="copyAdminLink()">
+              📋 Copy Link
+            </button>
+            <button type="button" class="cal-btn" style="flex:1; background:#139B50; color:#FFF;" onclick="shareAdminLinkOnWhatsApp()">
+              💬 WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="side-choice-btn" style="margin-top:10px; justify-content:center;" onclick="closeAdminModal()">
+          Close
+        </button>
+      </div>
     </div>
   </div>
 
