@@ -749,10 +749,46 @@ function generatePersonalizedAdminLink() {
 
 function copyAdminLink() {
   const resInput = document.getElementById('adminResultInput');
-  if (!resInput) return;
-  resInput.select();
-  navigator.clipboard.writeText(resInput.value);
-  alert("Personalized invite link copied to clipboard! 📋");
+  const nameEl = document.getElementById('adminGuestName');
+  const name = (nameEl && nameEl.value.trim()) || 'Guest';
+  const url = resInput ? resInput.value : window.location.href;
+
+  const fullInviteMessage = 
+`Namaste ${name}! You are cordially invited to celebrate our auspicious wedding ceremony.
+Sarika & Sampath ❤️
+
+🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad
+🎉 Reception: Friday, 27 Nov 2026, 7:00 PM at Thumma Gardens, Singarajpalle (Jangaon)
+
+View your personalized invitation: ${url}`;
+
+  // Robust clipboard copy with fallback support
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(fullInviteMessage).then(() => {
+      alert(`Personalized invitation for ${name} copied to clipboard! 📋`);
+    }).catch(() => {
+      fallbackCopyText(fullInviteMessage);
+    });
+  } else {
+    fallbackCopyText(fullInviteMessage);
+  }
+}
+
+function fallbackCopyText(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    alert("Personalized invitation message copied! 📋");
+  } catch (err) {
+    prompt("Copy the invitation text manually:", text);
+  }
+  document.body.removeChild(textArea);
 }
 
 function shareAdminLinkOnWhatsApp() {
@@ -779,6 +815,8 @@ function applyPersonalizedUrlParams() {
     selectedSide = sideParam;
     const modal = document.getElementById('sidePickerModal');
     if (modal) modal.classList.add('closed');
+    const sideSelect = document.getElementById('adminSideSelect');
+    if (sideSelect) sideSelect.value = sideParam;
   }
 
   if (guestName) {
@@ -787,7 +825,12 @@ function applyPersonalizedUrlParams() {
       badge.innerText = `Namaste ${guestName}! Warmly Welcome 🙏`;
       badge.style.display = 'inline-block';
     }
+
+    // Pre-fill the admin generator input
+    const adminInput = document.getElementById('adminGuestName');
+    if (adminInput) adminInput.value = guestName;
   }
+}
 }
 
 /* --- Complete Official Invitation Card Generator --- */
