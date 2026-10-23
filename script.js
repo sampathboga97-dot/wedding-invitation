@@ -873,7 +873,7 @@ function applyPersonalizedUrlParams() {
     if (adminInput) adminInput.value = guestName;
   }
 }
-/* --- Admin RSVP Dashboard with Side Separation --- */
+/* --- Corrected Admin RSVP Engine --- */
 let rawRsvpList = [];
 let currentRsvpFilter = 'all';
 
@@ -881,7 +881,7 @@ async function loadAdminRsvps() {
   const container = document.getElementById('adminRsvpList');
   if (!container) return;
 
-  container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 8px;">🔄 Fetching responses...</div>`;
+  container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 10px;">🔄 Fetching responses...</div>`;
 
   try {
     const res = await fetch(RSVP_ENDPOINT);
@@ -897,26 +897,36 @@ async function loadAdminRsvps() {
     renderFilteredRsvps();
 
   } catch (err) {
-    container.innerHTML = `<div style="text-align: center; color: #C62828; padding: 8px;">Failed to load responses.</div>`;
+    container.innerHTML = `<div style="text-align: center; color: #C62828; padding: 10px;">Failed to load responses.</div>`;
   }
 }
 
 function filterRsvpView(filterType) {
   currentRsvpFilter = filterType;
 
-  // Button styling states
-  const allBtn = document.getElementById('tabRsvpAll');
-  const groomBtn = document.getElementById('tabRsvpGroom');
-  const brideBtn = document.getElementById('tabRsvpBride');
+  const tabs = {
+    all: document.getElementById('tabRsvpAll'),
+    groom: document.getElementById('tabRsvpGroom'),
+    bride: document.getElementById('tabRsvpBride')
+  };
 
-  const defaultStyle = "flex:1; padding: 5px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #DFC394; background: #FFF9EC; color: #5C3A10; cursor: pointer;";
-  const activeStyle = "flex:1; padding: 5px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #851329; background: #851329; color: #FFF; cursor: pointer;";
+  const defaultStyle = "flex:1; padding: 6px 4px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #DFC394; background: #FFF9EC; color: #7A570D; cursor: pointer;";
+  const activeStyle = "flex:1; padding: 6px 4px; font-size: 0.72rem; font-weight: 700; border-radius: 6px; border: 1px solid #851329; background: #851329; color: #FFFFFF; cursor: pointer;";
 
-  if (allBtn) allBtn.style.cssText = filterType === 'all' ? activeStyle : defaultStyle;
-  if (groomBtn) groomBtn.style.cssText = filterType === 'groom' ? activeStyle : defaultStyle;
-  if (brideBtn) brideBtn.style.cssText = filterType === 'bride' ? activeStyle : defaultStyle;
+  Object.keys(tabs).forEach(key => {
+    if (tabs[key]) {
+      tabs[key].style.cssText = (key === filterType) ? activeStyle : defaultStyle;
+    }
+  });
 
   renderFilteredRsvps();
+}
+
+function normalizeRsvpSide(sideVal) {
+  if (!sideVal) return 'groom'; // Default unassigned/older test entries to groom
+  const s = String(sideVal).toLowerCase().trim();
+  if (s.includes('bride') || s === 'bride') return 'bride';
+  return 'groom';
 }
 
 function renderFilteredRsvps() {
@@ -928,53 +938,60 @@ function renderFilteredRsvps() {
 
   if (!container) return;
 
-  // Track overall stats by side
-  let groomHeadcount = 0;
-  let brideHeadcount = 0;
+  // 1. Calculate overall counts consistently using normalized side
+  let totalGroomGuests = 0;
+  let totalBrideGuests = 0;
 
   rawRsvpList.forEach(item => {
     const count = parseInt(item.guestsCount) || 1;
-    if (item.side === 'groom') {
-      groomHeadcount += count;
+    const side = normalizeRsvpSide(item.side);
+    if (side === 'groom') {
+      totalGroomGuests += count;
     } else {
-      brideHeadcount += count;
+      totalBrideGuests += count;
     }
   });
 
-  if (groomCountEl) groomCountEl.innerText = groomHeadcount;
-  if (brideCountEl) brideCountEl.innerText = brideHeadcount;
+  if (groomCountEl) groomCountEl.innerText = totalGroomGuests;
+  if (brideCountEl) brideCountEl.innerText = totalBrideGuests;
 
-  // Filter based on active selection tab
+  // 2. Filter list based on current active tab
   const displayList = rawRsvpList.filter(item => {
     if (currentRsvpFilter === 'all') return true;
-    return (item.side || 'groom').toLowerCase() === currentRsvpFilter;
+    return normalizeRsvpSide(item.side) === currentRsvpFilter;
   });
 
   if (displayList.length === 0) {
-    container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 10px;">No RSVPs for this selection.</div>`;
+    container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 14px;">No RSVPs for this selection.</div>`;
     if (countEl) countEl.innerText = "0";
     if (sumEl) sumEl.innerText = "0";
     return;
   }
 
-  let visibleHeadcount = 0;
+  let activeGuestsSum = 0;
 
   const html = displayList.map(item => {
     const count = parseInt(item.guestsCount) || 1;
-    visibleHeadcount += count;
+    activeGuestsSum += count;
+    const side = normalizeRsvpSide(item.side);
 
-    const sideBadge = (item.side === 'groom')
+    const sideBadge = (side === 'groom')
       ? `<span style="background:#FFF3CD; color:#856404; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👑 Groom</span>`
       : `<span style="background:#F8D7DA; color:#721C24; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👸 Bride</span>`;
 
     return `
-      <div style="border-bottom: 1px dashed #DFC394; padding: 6px 2px; text-align: left;">
+      <div style="border-bottom: 1px dashed #DFC394; padding: 7px 2px; text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <strong style="color: #851329;">${escapeHtml(item.name || 'Guest')}</strong>
-          <div>${sideBadge} <span style="background:#E2E3E5; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👥 ${count}</span></div>
+          <strong style="color: #851329; font-size: 0.82rem;">${escapeHtml(item.name || 'Guest')}</strong>
+          <div>
+            ${sideBadge}
+            <span style="background:#E2E3E5; color:#333; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700; margin-left:3px;">
+              👥 ${count}
+            </span>
+          </div>
         </div>
-        <div style="font-size: 0.7rem; color: #5A4632; margin-top: 2px;">
-          📍 ${escapeHtml(item.attendance || 'Attending')}
+        <div style="font-size: 0.72rem; color: #5A4632; margin-top: 3px;">
+          📍 ${escapeHtml(item.attendance || 'Both Events')}
         </div>
       </div>
     `;
@@ -982,7 +999,7 @@ function renderFilteredRsvps() {
 
   container.innerHTML = html;
   if (countEl) countEl.innerText = displayList.length;
-  if (sumEl) sumEl.innerText = visibleHeadcount;
+  if (sumEl) sumEl.innerText = activeGuestsSum;
 }
 /* --- Card Graphic Generator --- */
 function generateAndDownloadInvitationCard() {
