@@ -1031,3 +1031,193 @@ window.addEventListener('DOMContentLoaded', () => {
   updateWeddingCountdown();
   renderSideAndNames();
 });
+/* ========================================================
+   LOGISTICS, RSVP, ICS CALENDAR & PERSONALIZATION ENGINE
+   ======================================================== */
+
+// Register Service Worker for Offline Availability
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((err) => console.log('SW register failed:', err));
+  });
+}
+
+// Check URL Query Parameters for Dynamic Personalization (?guest=Ramesh+Garu&side=groom)
+function applyPersonalizedUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const guestName = params.get('guest');
+  const sideParam = params.get('side');
+
+  if (sideParam && (sideParam === 'bride' || sideParam === 'groom')) {
+    selectedSide = sideParam;
+    const modal = document.getElementById('sidePickerModal');
+    if (modal) modal.classList.add('closed');
+  }
+
+  if (guestName) {
+    const badge = document.getElementById('personalizedGuestBadge');
+    if (badge) {
+      badge.innerText = `Namaste ${guestName}! Warmly Welcome 🙏`;
+      badge.style.display = 'inline-block';
+    }
+  }
+}
+
+// Add to Apple / Device Calendar via .ics File Generation
+function downloadIcsFile(type) {
+  let title = "Wedding Ceremony of Sarika & Sampath";
+  let location = "VIP Gardens, Suraram Village Rd, Hyderabad, Telangana 500055";
+  let start = "20261126T034500Z"; // 9:15 AM IST
+  let end = "20261126T083000Z";
+  let desc = "Auspicious wedding ceremony of Sarika & Sampath #SamRika";
+
+  if (type === 'reception') {
+    title = "Wedding Reception of Sarika & Sampath";
+    location = "Thumma Gardens, Singarajpalle, Jangaon - Suryapet Rd, Telangana 506303";
+    start = "20261127T133000Z"; // 7:00 PM IST
+    end = "20261127T173000Z";
+    desc = "Grand Wedding Reception of Sarika & Sampath #SamRika";
+  }
+
+  const icsData = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//SamRika Wedding//EN",
+    "BEGIN:VEVENT",
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${desc}`,
+    `LOCATION:${location}`,
+    `DTSTART:${start}`,
+    `DTEND:${end}`,
+    "BEGIN:VALARM",
+    "TRIGGER:-PT2H",
+    "ACTION:DISPLAY",
+    "DESCRIPTION:Reminder",
+    "END:VALARM",
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ].join("\r\n");
+
+  const blob = new Blob([icsData], { type: "text/calendar;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = window.URL.createObjectURL(blob);
+  link.download = `${type}_Sarika_Sampath.ics`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Accordion Toggler
+function toggleAccordion(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+
+// Share via WhatsApp with direct personalized invite text
+function shareViaWhatsApp() {
+  const url = window.location.href;
+  const msg = encodeURIComponent(
+    `Namaste! You are cordially invited to celebrate the auspicious Wedding Ceremony of Sarika & Sampath ❤️\n\n` +
+    `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad\n` +
+    `🎉 Reception: Friday, 27 Nov 2026, 7:00 PM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
+    `View the interactive wedding invitation here: ${url}`
+  );
+  window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
+}
+
+// Couple Trivia Quiz with Confetti Burst
+function checkQuizAnswer(btn, isCorrect) {
+  const parent = btn.parentElement;
+  const btns = parent.querySelectorAll('.quiz-opt-btn');
+  btns.forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    triggerHeartbeatPulse();
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+    }
+  } else {
+    btn.classList.add('wrong');
+  }
+}
+
+// Live RSVP Submission to Firebase RTDB
+const RSVP_ENDPOINT = "https://wedding-wishes-3fdbe-default-rtdb.firebaseio.com/rsvps.json";
+
+async function submitRsvp() {
+  const nameInput = document.getElementById('rsvpName');
+  const attSelect = document.getElementById('rsvpAttendance');
+  const countSelect = document.getElementById('rsvpGuestsCount');
+  const btn = document.getElementById('rsvpSubmitBtn');
+  const successMsg = document.getElementById('rsvpSuccessMsg');
+
+  const name = nameInput.value.trim();
+  if (!name) {
+    alert("Please enter your name for the RSVP.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerText = "Submitting...";
+
+  try {
+    await fetch(RSVP_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        attendance: attSelect.value,
+        guestsCount: countSelect.value,
+        timestamp: Date.now()
+      })
+    });
+
+    nameInput.value = '';
+    successMsg.style.display = 'block';
+    triggerHeartbeatPulse();
+  } catch (e) {
+    alert("RSVP submitted offline. Thank you!");
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Confirm RSVP";
+  }
+}
+
+// Playlist Switcher Controls
+function openPlaylistModal() {
+  const modal = document.getElementById('playlistModal');
+  if (modal) modal.classList.remove('closed');
+}
+function closePlaylistModal() {
+  const modal = document.getElementById('playlistModal');
+  if (modal) modal.classList.add('closed');
+}
+function switchAudioTrack(trackFile, el) {
+  if (!audio) return;
+  audio.src = trackFile;
+  audio.play().then(() => {
+    isPlaying = true;
+    audioIcon.innerText = '🔊';
+  }).catch(() => {});
+  
+  document.querySelectorAll('.track-option').forEach(t => t.classList.remove('active-track'));
+  el.classList.add('active-track');
+}
+
+// Battery & Performance Optimization for Petals
+window.addEventListener('scroll', () => {
+  const petals = document.getElementById('petalsContainer');
+  if (!petals) return;
+  if (window.scrollY > 900) {
+    petals.style.display = 'none';
+  } else {
+    petals.style.display = 'block';
+  }
+}, { passive: true });
+
+// Attach personal params on startup
+window.addEventListener('DOMContentLoaded', () => {
+  applyPersonalizedUrlParams();
+});
