@@ -740,13 +740,15 @@ function switchAudioTrack(trackFile, el) {
   if (el) el.classList.add('active-track');
 }
 
-/* --- Admin Personalized Link Generator Modal (PIN Protected: 3010) --- */
 function openAdminModal() {
   const enteredPin = prompt("🔒 Enter Admin Security PIN:");
   
   if (enteredPin === "3010") {
     const m = document.getElementById('adminModal');
-    if (m) m.classList.remove('closed');
+    if (m) {
+      m.classList.remove('closed');
+      loadAdminRsvps(); // <-- Automatically pulls live RSVPs on unlock
+    }
   } else if (enteredPin !== null) {
     alert("❌ Incorrect PIN. Access denied.");
   }
