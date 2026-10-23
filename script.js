@@ -289,8 +289,40 @@ function lightTheDiya() {
   }
 }
 
+// Track whether the romantic violin song has already been triggered
+let isViolinPlaying = false;
+
 function flipStoryCard(card) {
-  if (card) card.classList.toggle('flipped');
+  if (!card) return;
+  
+  // Flip or unflip the clicked card
+  card.classList.toggle('flipped');
+
+  // Exact file name as uploaded in your repo (handles URL spaces/encoding cleanly)
+  const violinTrackName = "Violin sog From Iddarammayilatho telugu-song.mp3";
+
+  // Check if audio element exists and we haven't already switched to this track
+  if (audio && !isViolinPlaying) {
+    isViolinPlaying = true;
+    
+    // Smooth transition: stop current Divine Nadaswaram
+    audio.pause();
+    
+    // Switch source to the romantic violin song
+    audio.src = encodeURI(violinTrackName);
+    audio.currentTime = 0;
+    
+    // Play the new violin track
+    audio.play().then(() => {
+      isPlaying = true;
+      if (audioIcon) audioIcon.innerText = '🔊';
+    }).catch(err => {
+      console.log("Audio switch error:", err);
+    });
+
+    // Update active state in the music selector modal if open
+    document.querySelectorAll('.track-option').forEach(t => t.classList.remove('active-track'));
+  }
 }
 
 function showerTalambralu() {
