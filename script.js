@@ -871,7 +871,58 @@ function applyPersonalizedUrlParams() {
     if (adminInput) adminInput.value = guestName;
   }
 }
+/* --- Admin RSVP Dashboard Engine --- */
+async function loadAdminRsvps() {
+  const container = document.getElementById('adminRsvpList');
+  const countEl = document.getElementById('totalRsvpCount');
+  const sumEl = document.getElementById('totalGuestsSum');
+  if (!container) return;
 
+  container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 8px;">🔄 Fetching responses...</div>`;
+
+  try {
+    const res = await fetch(RSVP_ENDPOINT);
+    const data = await res.json();
+
+    if (!data) {
+      container.innerHTML = `<div style="text-align: center; color: #8C7355; padding: 8px;">No RSVPs submitted yet.</div>`;
+      if (countEl) countEl.innerText = "0";
+      if (sumEl) sumEl.innerText = "0";
+      return;
+    }
+
+    const rsvpArray = Object.values(data).reverse();
+    let totalHeadcount = 0;
+
+    const itemsHtml = rsvpArray.map(item => {
+      const guests = parseInt(item.guestsCount) || 1;
+      totalHeadcount += guests;
+
+      const sideBadge = (item.side === 'groom')
+        ? `<span style="background:#FFF3CD; color:#856404; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">Groom</span>`
+        : `<span style="background:#F8D7DA; color:#721C24; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">Bride</span>`;
+
+      return `
+        <div style="border-bottom: 1px dashed #DFC394; padding: 6px 2px; text-align: left;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: #851329;">${escapeHtml(item.name || 'Guest')}</strong>
+            <div>${sideBadge} <span style="background:#E2E3E5; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:700;">👥 ${guests}</span></div>
+          </div>
+          <div style="font-size: 0.7rem; color: #5A4632; margin-top: 2px;">
+            📍 ${escapeHtml(item.attendance || 'Attending')}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = itemsHtml;
+    if (countEl) countEl.innerText = rsvpArray.length;
+    if (sumEl) sumEl.innerText = totalHeadcount;
+
+  } catch (err) {
+    container.innerHTML = `<div style="text-align: center; color: #C62828; padding: 8px;">Failed to load responses.</div>`;
+  }
+}
 /* --- Card Graphic Generator --- */
 function generateAndDownloadInvitationCard() {
   const canvas = document.getElementById('officialInviteCanvas');
