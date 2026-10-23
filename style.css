@@ -777,3 +777,287 @@ body {
   color: #FFF;
   border-color: #FFD700;
 }
+/* ========================================================
+   ENHANCED LOGISTICS, RSVP, QUIZ, DRESS CODE & UTILITIES
+   ======================================================== */
+
+/* Personalized Guest Banner Badge */
+.personalized-guest-chip {
+  display: inline-block;
+  background: radial-gradient(circle, #FFF7D1 0%, #FFE680 100%);
+  border: 1.5px solid #C59A3F;
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-bottom: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #7A570D;
+  box-shadow: 0 4px 12px rgba(197, 154, 63, 0.2);
+}
+
+/* Feature Containers & Logistics */
+.feature-card-box {
+  background: #FFFDF9;
+  border: 1.5px solid #DFC394;
+  border-radius: 20px;
+  padding: 18px 14px;
+  margin: 18px auto;
+  max-width: 430px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(142, 106, 38, 0.08);
+}
+.feature-card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--maroon-primary);
+  margin-bottom: 3px;
+}
+.feature-card-sub {
+  font-size: 0.8rem;
+  color: #6C5D4B;
+  margin-bottom: 12px;
+}
+
+/* Calendar & Route Buttons */
+.calendar-btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.cal-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #FFF9EC 0%, #FAEDD0 100%);
+  border: 1.5px solid #C59A3F;
+  border-radius: 14px;
+  padding: 9px 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #7A570D;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-decoration: none;
+}
+.cal-btn:active { transform: scale(0.97); }
+
+.route-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+.route-btn {
+  background: #FAF5EB;
+  border: 1px solid #DFC394;
+  border-radius: 12px;
+  padding: 8px 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #5C3A10;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.route-btn:active { background: #F2E4CB; }
+
+/* Collapsible Stay & Accommodations */
+.stay-accordion-toggle {
+  width: 100%;
+  background: #FFF9ED;
+  border: 1.5px dashed #DFC394;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #7A570D;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.stay-accordion-content {
+  display: none;
+  text-align: left;
+  background: #FFFDF9;
+  border: 1px solid #DFC394;
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-top: 6px;
+}
+.stay-item {
+  padding: 7px 0;
+  border-bottom: 1px dashed #E8D7B8;
+  font-size: 0.8rem;
+}
+.stay-item:last-child { border-bottom: none; }
+.stay-name { font-weight: 800; color: var(--maroon-primary); }
+.stay-meta { color: #6C5D4B; font-size: 0.74rem; margin-top: 2px; }
+
+/* Help Drawer Floating Button */
+.help-drawer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFF;
+  border: 1.5px solid #DFC394;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--maroon-primary);
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(133, 19, 41, 0.08);
+}
+.emergency-call-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.call-btn {
+  flex: 1;
+  background: #139B50;
+  color: #FFF;
+  border-radius: 14px;
+  padding: 9px 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Dress Code / Color Palette */
+.palette-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.palette-card {
+  flex: 1;
+  max-width: 120px;
+  background: #FFF;
+  border: 1px solid #DFC394;
+  border-radius: 16px;
+  padding: 10px 6px;
+  text-align: center;
+}
+.palette-swatches {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.swatch-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.palette-title { font-family: 'Cinzel', serif; font-size: 0.76rem; font-weight: 800; color: var(--maroon-primary); }
+.palette-note { font-size: 0.68rem; color: #6C5D4B; margin-top: 2px; }
+
+/* Interactive Couple Quiz */
+.quiz-box {
+  text-align: left;
+  background: #FFF;
+  border: 1px solid #DFC394;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 10px;
+}
+.quiz-q-txt {
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: #2F2620;
+  margin-bottom: 8px;
+}
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.quiz-opt-btn {
+  background: #FAF7F0;
+  border: 1.5px solid #E8D7B8;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4C4238;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.quiz-opt-btn.correct { background: #E8F5E9; border-color: #4CAF50; color: #1B5E20; }
+.quiz-opt-btn.wrong { background: #FFEBEE; border-color: #E57373; color: #B71C1C; }
+
+/* RSVP Attendance Form */
+.rsvp-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+.rsvp-select, .rsvp-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #DFC394;
+  font-size: 0.88rem;
+  background: #FFF;
+  outline: none;
+}
+.rsvp-submit-btn {
+  background: linear-gradient(135deg, #851329 0%, #560616 100%);
+  color: #FFF;
+  border: none;
+  border-radius: 10px;
+  padding: 11px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+/* Audio Playlist Modal */
+.audio-track-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  text-align: left;
+}
+.track-option {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #DFC394;
+  background: #FAF7F0;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.track-option.active-track {
+  background: #FFF0CE;
+  border-color: #C59A3F;
+  color: #7A570D;
+}
+
+/* Reduced Motion / Low Power Battery Optimization */
+@media (prefers-reduced-motion: reduce) {
+  .petal, .divine-aura {
+    animation: none !important;
+  }
+}
