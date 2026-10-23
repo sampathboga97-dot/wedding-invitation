@@ -1,16 +1,692 @@
-// Share via WhatsApp with your preferred message text
+/* ========================================================
+   WEDDING INVITATION INTERACTIVE ENGINE
+   ======================================================== */
+
+// Global State
+let selectedSide = 'bride';
+let currentLang = 'en';
+
+/* --- Names & Greetings Data --- */
+const namesData = {
+  brideParents: {
+    en: `Deshaboina Venkateshwara Prabhu<span class="parent-connector">&amp;</span>Mrs. Sharadamba`,
+    te: `దేశబోయిన వెంకటేశ్వర ప్రభు<span class="parent-connector">&amp;</span>శ్రీమతి శారదాంబ`
+  },
+  groomParents: {
+    en: `Boga Ashok<span class="parent-connector">&amp;</span>Mrs. Geetha`,
+    te: `బోగ అశోక్<span class="parent-connector">&amp;</span>శ్రీమతి గీత`
+  },
+  grandparents: {
+    enPrimary: `Late Smt. Boga Narsamma &amp; Late Sri Boga Shivalingam`,
+    enSecondary: `(With the eternal blessings of Nanamma &amp; Thathya)`,
+    tePrimary: `స్వర్గీయ శ్రీమతి బోగ నర్సమ్మ &amp; స్వర్గీయ శ్రీ బోగ శివలింగం`,
+    teSecondary: `(నానమ్మ &amp; తాతయ్య గార్ల దివ్యాశీస్సులతో)`
+  },
+  welcomeBanner: {
+    bride: {
+      enTitle: "Deshaboina Family Welcomes You",
+      enSub: "With warm hearts and warm blessings 🙏",
+      teTitle: "దేశబోయిన వారి కుటుంబం తరపున సాదర సుస్వాగతం",
+      teSub: "వధూవరులను ఆశీర్వదించడానికి విచ్చేయండి 🙏"
+    },
+    groom: {
+      enTitle: "Boga Family Welcomes You",
+      enSub: "With warm hearts and warm blessings 🙏",
+      teTitle: "బోగ వారి కుటుంబం తరపున సాదర సుస్వాగతం",
+      teSub: "వధూవరులను ఆశీర్వదించడానికి విచ్చేయండి 🙏"
+    }
+  }
+};
+
+function getTimeGreeting() {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return { en: "🌅 Good Morning", te: "🌅 శుభోదయం" };
+  if (hour >= 12 && hour < 17) return { en: "☀️ Good Afternoon", te: "☀️ శుభ మధ్యాహ్నం" };
+  if (hour >= 17 && hour < 21) return { en: "🌇 Good Evening", te: "🌇 శుభ సాయంత్రం" };
+  return { en: "🌙 Good Night", te: "🌙 శుభరాత్రి" };
+}
+
+/* --- Side Picker & Language Handlers --- */
+function selectGuestSide(side) {
+  selectedSide = side;
+  renderSideAndNames();
+  const modal = document.getElementById('sidePickerModal');
+  if (modal) modal.classList.add('closed');
+  triggerHeartbeatPulse();
+}
+
+function reopenSidePicker() {
+  const modal = document.getElementById('sidePickerModal');
+  if (modal) modal.classList.remove('closed');
+  triggerHeartbeatPulse();
+}
+
+function renderSideAndNames() {
+  const bannerData = namesData.welcomeBanner[selectedSide];
+  const welcomeEn = document.getElementById('familyWelcomeEn');
+  const welcomeTe = document.getElementById('familyWelcomeTe');
+  const gpSection = document.getElementById('groomGrandparentsSection');
+  const gpNamesEn = document.getElementById('grandparentsNamesEn');
+  const gpNamesTe = document.getElementById('grandparentsNamesTe');
+  const brideParentsEl = document.getElementById('brideParentsText');
+  const groomParentsEl = document.getElementById('groomParentsText');
+  const coupleTitle = document.getElementById('coupleTitle');
+  const greetingPill = document.getElementById('timeGreetingPill');
+  const topDownloadLbl = document.getElementById('topDownloadLbl');
+  const pelliKTitle = document.getElementById('pelliKTitle');
+
+  const greeting = getTimeGreeting();
+  if (greetingPill) greetingPill.innerText = currentLang === 'te' ? greeting.te : greeting.en;
+  if (topDownloadLbl) topDownloadLbl.innerText = currentLang === 'te' ? 'వివాహ ఆహ్వాన పత్రిక డౌన్‌లోడ్' : 'Download Card';
+
+  if (pelliKTitle) {
+    pelliKTitle.innerText = selectedSide === 'bride' 
+      ? (currentLang === 'te' ? 'పెళ్లి కూతురు వేడుక' : 'Pelli Koothuru Ceremony')
+      : (currentLang === 'te' ? 'పెళ్లి కొడుకు వేడుక' : 'Pelli Koduku Ceremony');
+  }
+
+  if (coupleTitle) {
+    if (currentLang === 'te') {
+      coupleTitle.innerHTML = coupleTitle.getAttribute('data-te');
+      coupleTitle.classList.add('telugu-font');
+    } else {
+      coupleTitle.innerHTML = coupleTitle.getAttribute('data-en');
+      coupleTitle.classList.remove('telugu-font');
+    }
+  }
+
+  if (brideParentsEl) brideParentsEl.innerHTML = namesData.brideParents[currentLang];
+  if (groomParentsEl) groomParentsEl.innerHTML = namesData.groomParents[currentLang];
+
+  if (welcomeEn) welcomeEn.innerText = currentLang === 'te' ? bannerData.teTitle : bannerData.enTitle;
+  if (welcomeTe) welcomeTe.innerText = currentLang === 'te' ? bannerData.teSub : bannerData.enSub;
+
+  if (gpSection) {
+    if (selectedSide === 'bride') {
+      gpSection.style.display = 'none';
+    } else {
+      gpSection.style.display = 'block';
+      if (gpNamesEn) gpNamesEn.innerHTML = currentLang === 'te' ? namesData.grandparents.tePrimary : namesData.grandparents.enPrimary;
+      if (gpNamesTe) gpNamesTe.innerHTML = currentLang === 'te' ? namesData.grandparents.teSecondary : namesData.grandparents.enSecondary;
+    }
+  }
+}
+
+function toggleLanguage() {
+  currentLang = currentLang === 'en' ? 'te' : 'en';
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if (el.id !== 'coupleTitle') el.innerHTML = el.getAttribute(`data-${currentLang}`);
+  });
+  const nameInp = document.getElementById('guestName');
+  const msgInp = document.getElementById('guestMessage');
+  if (nameInp) nameInp.placeholder = currentLang === 'en' ? 'Your Name (e.g., Ramesh Uncle)' : 'మీ పేరు (ఉదా: రమేష్ బాబాయ్)';
+  if (msgInp) msgInp.placeholder = currentLang === 'en' ? 'Your blessing / wish...' : 'మీ ఆశీస్సులు / శుభాకాంక్షలు...';
+  renderSideAndNames();
+  updateWeddingCountdown();
+}
+
+/* --- Image Fallback Handler --- */
+const extList = ['.jpeg', '.jpg', '.png', '.jfif'];
+function handleImgError(img, baseName) {
+  let attempt = parseInt(img.getAttribute('data-att') || '0');
+  if (attempt < extList.length) {
+    img.setAttribute('data-att', attempt + 1);
+    img.src = baseName + extList[attempt];
+  }
+}
+
+/* --- Audio Controls --- */
+const audio = document.getElementById('weddingAudio');
+const audioIcon = document.getElementById('audioPillIcon');
+let isPlaying = false;
+let isTransitioning = false;
+let audioCtx = null;
+let musicSource = null;
+let musicGain = null;
+
+function setupWebAudioMusic() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (!musicSource && audio) {
+      musicSource = audioCtx.createMediaElementSource(audio);
+      musicGain = audioCtx.createGain();
+      musicGain.gain.setValueAtTime(0.85, audioCtx.currentTime);
+      musicSource.connect(musicGain);
+      musicGain.connect(audioCtx.destination);
+    }
+  } catch (e) {
+    console.log("Audio setup:", e);
+  }
+}
+
+function triggerHeartbeatPulse() {
+  if (navigator.vibrate) navigator.vibrate([60, 40, 80]);
+}
+
+function handleHandConnect() {
+  if (isTransitioning) return;
+  isTransitioning = true;
+
+  const screen = document.getElementById('handsScreen');
+  const pulse = document.getElementById('touchPulse');
+  const prompt = document.getElementById('tapPrompt');
+
+  if (pulse) pulse.style.display = 'none';
+  if (prompt) prompt.style.display = 'none';
+
+  triggerHeartbeatPulse();
+  if (screen) screen.classList.add('connecting');
+
+  if (audio) {
+    setupWebAudioMusic();
+    audio.play().then(() => {
+      isPlaying = true;
+      if (audioIcon) audioIcon.innerText = '🔊';
+    }).catch(() => {});
+  }
+
+  setTimeout(() => {
+    if (screen) {
+      screen.classList.add('dismissed');
+      screen.style.display = 'none';
+    }
+    showerAkshintalu();
+  }, 1500);
+}
+
+function toggleAudio() {
+  if (!audio) return;
+  if (isPlaying) {
+    audio.pause();
+    isPlaying = false;
+    if (audioIcon) audioIcon.innerText = '🔇';
+  } else {
+    setupWebAudioMusic();
+    audio.play().then(() => {
+      isPlaying = true;
+      if (audioIcon) audioIcon.innerText = '🔊';
+    }).catch(() => {});
+  }
+}
+
+/* --- Scratch Card --- */
+function initScratchCard() {
+  const canvas = document.getElementById('scratchCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+
+  const goldGrad = ctx.createLinearGradient(0, 0, W, H);
+  goldGrad.addColorStop(0, '#E6CA65');
+  goldGrad.addColorStop(0.3, '#FFF3A8');
+  goldGrad.addColorStop(0.6, '#C4982E');
+  goldGrad.addColorStop(1, '#9C7227');
+  ctx.fillStyle = goldGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  for (let i = 0; i < 150; i++) {
+    ctx.fillRect(Math.random() * W, Math.random() * H, 2, 2);
+  }
+
+  ctx.font = 'bold 15px "Cinzel", serif';
+  ctx.fillStyle = '#4D3205';
+  ctx.textAlign = 'center';
+  ctx.fillText('✨ SCRATCH HERE WITH FINGER ✨', W / 2, H / 2 + 5);
+
+  let isDrawing = false;
+  function scratch(e) {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const x = (clientX - rect.left) * (canvas.width / rect.width);
+    const y = (clientY - rect.top) * (canvas.height / rect.height);
+
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 18, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+
+  canvas.addEventListener('mousedown', () => isDrawing = true);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mousemove', scratch);
+  canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+  canvas.addEventListener('touchend', () => isDrawing = false);
+  canvas.addEventListener('touchmove', scratch);
+}
+
+/* --- Sacred Diya Lighting --- */
+let isDiyaLit = false;
+function lightTheDiya() {
+  if (isDiyaLit) return;
+  isDiyaLit = true;
+
+  const diya = document.getElementById('diyaBox');
+  const status = document.getElementById('diyaStatus');
+
+  if (diya) diya.classList.add('lit');
+  if (status) {
+    status.innerText = currentLang === 'en' 
+      ? "✨ The Sacred Diya is Lit! Divine Blessings Showered 🙏" 
+      : "✨ మంగళ దీపం వెలిగించబడింది! దైవ ఆశీస్సులు 🙏";
+    status.style.color = "#A37C32";
+  }
+
+  triggerHeartbeatPulse();
+  if (typeof confetti === 'function') {
+    confetti({
+      particleCount: 45,
+      spread: 60,
+      origin: { y: 0.65 },
+      colors: ['#FFD700', '#FF9F1C', '#FFF275', '#E71D36']
+    });
+  }
+}
+
+function flipStoryCard(card) {
+  if (card) card.classList.toggle('flipped');
+}
+
+function showerTalambralu() {
+  triggerHeartbeatPulse();
+  if (typeof confetti === 'function') {
+    confetti({
+      particleCount: 75,
+      spread: 85,
+      angle: 90,
+      origin: { y: 0.65 },
+      colors: ['#FFD700', '#FFEA00', '#FFFDD0', '#E5B80B']
+    });
+  }
+}
+
+/* --- Countdown Timer --- */
+const weddingDate = new Date('2026-11-26T09:15:00+05:30').getTime();
+
+function updateWeddingCountdown() {
+  const now = new Date();
+  const diff = weddingDate - now.getTime();
+  const countdownRow = document.getElementById('countdownMedalsRow');
+
+  if (diff <= 0) {
+    if (countdownRow) countdownRow.style.display = 'none';
+    return;
+  }
+
+  const dEl = document.getElementById('days');
+  const hEl = document.getElementById('hours');
+  const mEl = document.getElementById('mins');
+  const sEl = document.getElementById('secs');
+
+  if (dEl) dEl.innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+  if (hEl) hEl.innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+  if (mEl) mEl.innerText = String(Math.floor((diff % (1000 * 60)) / (1000 * 60))).padStart(2, '0');
+  if (sEl) sEl.innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+}
+
+/* --- Firebase Blessings Counter & Wall --- */
+const FIREBASE_ENDPOINT = "https://wedding-wishes-3fdbe-default-rtdb.firebaseio.com/wishes.json";
+const FIREBASE_COUNTER_URL = "https://wedding-wishes-3fdbe-default-rtdb.firebaseio.com/counter.json";
+let totalBlessings = 356;
+
+async function loadCloudCounter() {
+  try {
+    const res = await fetch(FIREBASE_COUNTER_URL);
+    const data = await res.json();
+    if (data && typeof data.count === 'number') totalBlessings = data.count;
+  } catch (err) {}
+  const counterEl = document.getElementById('blessingCount');
+  if (counterEl) counterEl.innerText = totalBlessings;
+}
+
+async function showerAkshintalu() {
+  totalBlessings++;
+  const counterEl = document.getElementById('blessingCount');
+  if (counterEl) counterEl.innerText = totalBlessings;
+
+  if (typeof confetti === 'function') {
+    confetti({ particleCount: 70, spread: 70, origin: { x: 0.5, y: 0.2 }, colors: ['#FFD700', '#FFA000', '#D2143A', '#FFB7B2', '#FFFFFF'] });
+  }
+  try {
+    await fetch(FIREBASE_COUNTER_URL, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ count: totalBlessings }) });
+  } catch (err) {}
+}
+
+async function loadCloudWishes() {
+  const box = document.getElementById('wishesBox');
+  if (!box) return;
+  try {
+    const response = await fetch(FIREBASE_ENDPOINT);
+    const data = await response.json();
+    box.innerHTML = '';
+    if (data) {
+      const wishes = Object.values(data).reverse();
+      wishes.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'wish-item';
+        const photoHtml = item.photo ? `<img src="${item.photo}" class="wish-user-avatar" alt="Selfie">` : '';
+        const audioHtml = item.audio ? `<audio controls src="${item.audio}" class="wish-audio-bar"></audio>` : '';
+        card.innerHTML = `
+          <div class="wish-flex-body">
+            ${photoHtml}
+            <div style="flex:1;">
+              <div class="wish-text">"${escapeHtml(item.wish || 'Heartfelt Wedding Blessings! 💐')}"</div>
+              <div class="wish-author">— ${escapeHtml(item.name || 'Well Wisher')}</div>
+              ${audioHtml}
+            </div>
+          </div>
+        `;
+        box.appendChild(card);
+      });
+    }
+  } catch (err) {
+    box.innerHTML = '<div style="text-align:center; padding:12px; color:#8C7355;">Warm Blessings to the lovely couple! 💐</div>';
+  }
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, function(m) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+  });
+}
+
+/* --- Photo Booth & Voice Record Stubs --- */
+let streamObj = null;
+let capturedSelfieBase64 = null;
+
+async function togglePhotoBooth() {
+  const boothArea = document.getElementById('boothArea');
+  if (!boothArea) return;
+  if (boothArea.style.display === 'block') { closePhotoBooth(); return; }
+  try {
+    streamObj = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "user", width: { ideal: 400 }, height: { ideal: 400 } },
+      audio: false
+    });
+    const video = document.getElementById('boothVideo');
+    if (video) { video.srcObject = streamObj; boothArea.style.display = 'block'; }
+  } catch (err) {
+    alert("Camera permission is required to snap a selfie frame! 📸");
+  }
+}
+
+function closePhotoBooth() {
+  if (streamObj) {
+    streamObj.getTracks().forEach(t => t.stop());
+    streamObj = null;
+  }
+  const boothArea = document.getElementById('boothArea');
+  if (boothArea) boothArea.style.display = 'none';
+}
+
+function snapSelfie() {
+  const video = document.getElementById('boothVideo');
+  const canvas = document.getElementById('boothCanvas');
+  if (!video || !canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  ctx.save();
+  ctx.translate(400, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, 400, 400);
+  ctx.restore();
+
+  capturedSelfieBase64 = canvas.toDataURL('image/jpeg', 0.6);
+  const thumb = document.getElementById('selfieThumb');
+  if (thumb) thumb.src = capturedSelfieBase64;
+  const preview = document.getElementById('capturedPhotoPreview');
+  if (preview) preview.style.display = 'flex';
+  closePhotoBooth();
+}
+
+function clearSelfie() {
+  capturedSelfieBase64 = null;
+  const preview = document.getElementById('capturedPhotoPreview');
+  if (preview) preview.style.display = 'none';
+}
+
+let mediaRecorder = null;
+let audioChunks = [];
+let capturedAudioBase64 = null;
+
+async function handleVoiceRecord() {
+  const statusArea = document.getElementById('voiceStatusArea');
+  const timerLbl = document.getElementById('recordingTimer');
+  const audioPreview = document.getElementById('recordedAudioPreview');
+  const clearLink = document.getElementById('clearVoiceLink');
+  const recBtn = document.getElementById('recordVoiceBtn');
+
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+    return;
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunks, { type: 'audio/webm' });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        capturedAudioBase64 = reader.result;
+        if (audioPreview) { audioPreview.src = capturedAudioBase64; audioPreview.style.display = 'block'; }
+        if (clearLink) clearLink.style.display = 'block';
+        if (timerLbl) { timerLbl.innerText = "✅ Voice Blessing Ready!"; timerLbl.style.color = "#2E7D32"; }
+        if (recBtn) recBtn.innerText = "🎙️ Re-record (10s)";
+      };
+      reader.readAsDataURL(blob);
+    };
+
+    mediaRecorder.start();
+    if (statusArea) statusArea.style.display = 'block';
+    if (audioPreview) audioPreview.style.display = 'none';
+    if (clearLink) clearLink.style.display = 'none';
+    if (recBtn) recBtn.innerText = "⏹️ Stop Recording";
+    if (timerLbl) { timerLbl.innerText = "🔴 Recording... (Tap Stop or Send)"; timerLbl.style.color = "#851329"; }
+  } catch (err) {
+    alert("Microphone permission is required to leave a voice blessing! 🎙️");
+  }
+}
+
+function clearVoiceNote() {
+  capturedAudioBase64 = null;
+  const statusArea = document.getElementById('voiceStatusArea');
+  if (statusArea) statusArea.style.display = 'none';
+  const recBtn = document.getElementById('recordVoiceBtn');
+  if (recBtn) recBtn.innerText = "🎙️ Voice Note (10s)";
+}
+
+async function submitWish() {
+  const postBtn = document.getElementById('postWishBtn');
+  const nameInput = document.getElementById('guestName');
+  const msgInput = document.getElementById('guestMessage');
+
+  const name = (nameInput && nameInput.value.trim()) || "Well Wisher";
+  const wish = msgInput ? msgInput.value.trim() : "";
+
+  if (!wish && !capturedSelfieBase64 && !capturedAudioBase64) {
+    alert(currentLang === 'en' ? "Please leave a blessing message, photo, or voice note! 💛" : "దయచేసి ఒక సందేశం, ఫోటో లేదా వాయిస్ నోట్ జతచేయండి! 💛");
+    return;
+  }
+
+  if (postBtn) { postBtn.innerText = "Saving..."; postBtn.disabled = true; }
+
+  try {
+    await fetch(FIREBASE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        wish: wish || (capturedAudioBase64 ? "🎵 Voice Blessing" : "📸 Wedding Photo Blessing"),
+        photo: capturedSelfieBase64 || null,
+        audio: capturedAudioBase64 || null,
+        timestamp: Date.now()
+      })
+    });
+
+    if (nameInput) nameInput.value = '';
+    if (msgInput) msgInput.value = '';
+    clearSelfie();
+    clearVoiceNote();
+    await loadCloudWishes();
+    showerAkshintalu();
+  } catch (err) {
+    alert("Could not connect. Please check your internet connection.");
+  } finally {
+    if (postBtn) { postBtn.innerText = "✨ Send Blessing"; postBtn.disabled = false; }
+  }
+}
+
+/* --- ICS Calendar Reminders --- */
+function downloadIcsFile(type) {
+  let title = "Wedding Ceremony of Sarika & Sampath";
+  let location = "VIP Gardens, Suraram Village Rd, Hyderabad, Telangana 500055";
+  let start = "20261126T034500Z";
+  let end = "20261126T083000Z";
+  let desc = "Auspicious wedding ceremony of Sarika & Sampath #SamRika";
+
+  if (type === 'reception') {
+    title = "Wedding Reception of Sarika & Sampath";
+    location = "Thumma Gardens, Singarajpalle, Jangaon - Suryapet Rd, Telangana 506303";
+    start = "20261127T133000Z";
+    end = "20261127T173000Z";
+    desc = "Grand Wedding Reception of Sarika & Sampath #SamRika";
+  }
+
+  const icsData = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//SamRika Wedding//EN",
+    "BEGIN:VEVENT",
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${desc}`,
+    `LOCATION:${location}`,
+    `DTSTART:${start}`,
+    `DTEND:${end}`,
+    "BEGIN:VALARM",
+    "TRIGGER:-PT2H",
+    "ACTION:DISPLAY",
+    "DESCRIPTION:Reminder",
+    "END:VALARM",
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ].join("\r\n");
+
+  const blob = new Blob([icsData], { type: "text/calendar;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = window.URL.createObjectURL(blob);
+  link.download = `${type}_Sarika_Sampath.ics`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function toggleAccordion(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+
+/* --- WhatsApp Share --- */
 function shareViaWhatsApp() {
   const url = window.location.href;
   const msg = encodeURIComponent(
     `Namaste! You are cordially invited to celebrate our auspicious wedding ceremony.\nSarika & Sampath ❤️\n\n` +
     `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad\n` +
     `🎉 Reception: Friday, 27 Nov 2026, 7:00 PM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
-    `View our interactive wedding invitation here: ${url}`
+    `View our wedding invitation: ${url}`
   );
   window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
 }
 
-// Admin Modal Handlers
+/* --- Couple Quiz --- */
+function checkQuizAnswer(btn, isCorrect) {
+  const parent = btn.parentElement;
+  const btns = parent.querySelectorAll('.quiz-opt-btn');
+  btns.forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    triggerHeartbeatPulse();
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+    }
+  } else {
+    btn.classList.add('wrong');
+  }
+}
+
+/* --- RSVP --- */
+const RSVP_ENDPOINT = "https://wedding-wishes-3fdbe-default-rtdb.firebaseio.com/rsvps.json";
+
+async function submitRsvp() {
+  const nameInput = document.getElementById('rsvpName');
+  const attSelect = document.getElementById('rsvpAttendance');
+  const countSelect = document.getElementById('rsvpGuestsCount');
+  const btn = document.getElementById('rsvpSubmitBtn');
+  const successMsg = document.getElementById('rsvpSuccessMsg');
+
+  const name = nameInput ? nameInput.value.trim() : "";
+  if (!name) {
+    alert("Please enter your name for the RSVP.");
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.innerText = "Submitting..."; }
+
+  try {
+    await fetch(RSVP_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        attendance: attSelect ? attSelect.value : "",
+        guestsCount: countSelect ? countSelect.value : "",
+        timestamp: Date.now()
+      })
+    });
+
+    if (nameInput) nameInput.value = '';
+    if (successMsg) successMsg.style.display = 'block';
+    triggerHeartbeatPulse();
+  } catch (e) {
+    alert("RSVP submitted. Thank you!");
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerText = "Confirm RSVP"; }
+  }
+}
+
+/* --- Music Playlist Modal --- */
+function openPlaylistModal() {
+  const modal = document.getElementById('playlistModal');
+  if (modal) modal.classList.remove('closed');
+}
+function closePlaylistModal() {
+  const modal = document.getElementById('playlistModal');
+  if (modal) modal.classList.add('closed');
+}
+function switchAudioTrack(trackFile, el) {
+  if (!audio) return;
+  audio.src = trackFile;
+  audio.play().then(() => {
+    isPlaying = true;
+    if (audioIcon) audioIcon.innerText = '🔊';
+  }).catch(() => {});
+  
+  document.querySelectorAll('.track-option').forEach(t => t.classList.remove('active-track'));
+  if (el) el.classList.add('active-track');
+}
+
+/* --- Admin Personalized Link Generator Modal --- */
 function openAdminModal() {
   const m = document.getElementById('adminModal');
   if (m) m.classList.remove('closed');
@@ -20,10 +696,12 @@ function closeAdminModal() {
   if (m) m.classList.add('closed');
 }
 
-// Generate Personalized Link Function (Also accessible in browser console)
 function generatePersonalizedAdminLink() {
-  const name = document.getElementById('adminGuestName').value.trim();
-  const side = document.getElementById('adminSideSelect').value;
+  const nameEl = document.getElementById('adminGuestName');
+  const sideEl = document.getElementById('adminSideSelect');
+  const name = nameEl ? nameEl.value.trim() : "";
+  const side = sideEl ? sideEl.value : "groom";
+
   if (!name) {
     alert("Please enter the guest's name (e.g. Kishore Mama)");
     return;
@@ -33,12 +711,13 @@ function generatePersonalizedAdminLink() {
 
   const outContainer = document.getElementById('adminOutputContainer');
   const resInput = document.getElementById('adminResultInput');
-  resInput.value = finalUrl;
-  outContainer.style.display = 'block';
+  if (resInput) resInput.value = finalUrl;
+  if (outContainer) outContainer.style.display = 'block';
 }
 
 function copyAdminLink() {
   const resInput = document.getElementById('adminResultInput');
+  if (!resInput) return;
   resInput.select();
   navigator.clipboard.writeText(resInput.value);
   alert("Personalized invite link copied to clipboard! 📋");
@@ -46,22 +725,102 @@ function copyAdminLink() {
 
 function shareAdminLinkOnWhatsApp() {
   const resInput = document.getElementById('adminResultInput');
-  const name = document.getElementById('adminGuestName').value.trim() || 'Guest';
-  const url = resInput.value;
+  const nameEl = document.getElementById('adminGuestName');
+  const name = (nameEl && nameEl.value.trim()) || 'Guest';
+  const url = resInput ? resInput.value : window.location.href;
   const msg = encodeURIComponent(
     `Namaste ${name}! You are cordially invited to celebrate our auspicious wedding ceremony.\nSarika & Sampath ❤️\n\n` +
-    `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM\n` +
-    `📍 VIP Gardens, Suraram, Hyderabad\n\n` +
-    `View your personalized interactive invitation: ${url}`
+    `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad\n` +
+    `🎉 Reception: Friday, 27 Nov 2026, 7:00 PM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
+    `View your personalized invitation: ${url}`
   );
   window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
 }
 
-// Console helper: generateLink("Kishore Mama", "groom")
-window.generateLink = function(guestName, side = "groom") {
-  const cleanBase = window.location.origin + window.location.pathname;
-  const url = `${cleanBase}?guest=${encodeURIComponent(guestName)}&side=${side}`;
-  console.log("%c Ready-to-share link:", "color: #C59A3F; font-weight: bold; font-size: 14px;");
-  console.log(url);
-  return url;
-};
+/* --- URL Query Parameters Reader (?guest=Kishore+Mama&side=groom) --- */
+function applyPersonalizedUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const guestName = params.get('guest');
+  const sideParam = params.get('side');
+
+  if (sideParam && (sideParam === 'bride' || sideParam === 'groom')) {
+    selectedSide = sideParam;
+    const modal = document.getElementById('sidePickerModal');
+    if (modal) modal.classList.add('closed');
+  }
+
+  if (guestName) {
+    const badge = document.getElementById('personalizedGuestBadge');
+    if (badge) {
+      badge.innerText = `Namaste ${guestName}! Warmly Welcome 🙏`;
+      badge.style.display = 'inline-block';
+    }
+  }
+}
+
+/* --- Card Graphic Generator --- */
+function generateAndDownloadInvitationCard() {
+  const canvas = document.getElementById('officialInviteCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+  const isTe = (currentLang === 'te');
+
+  const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 100, W / 2, H / 2, 900);
+  bgGrad.addColorStop(0, '#FFFDF8');
+  bgGrad.addColorStop(0.7, '#FDF6E9');
+  bgGrad.addColorStop(1, '#F7E7CD');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.lineWidth = 18;
+  ctx.strokeStyle = '#851329';
+  ctx.strokeRect(30, 30, W - 60, H - 60);
+
+  ctx.lineWidth = 3.5;
+  ctx.strokeStyle = '#C59A3F';
+  ctx.strokeRect(48, 48, W - 96, H - 96);
+
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 26px "Noto Sans Telugu", sans-serif';
+  ctx.fillStyle = '#851329';
+  ctx.fillText('||  శ్రీరస్తు - శుభమస్తు - అవిఘ్నమస్తు  ||', W / 2, 130);
+
+  ctx.font = 'bold 22px "Cinzel", serif';
+  ctx.fillStyle = '#8E6A26';
+  ctx.fillText(isTe ? 'వివాహ మహోత్సవ ఆహ్వాన పత్రిక' : 'WEDDING INVITATION', W / 2, 175);
+
+  ctx.font = '36px sans-serif';
+  ctx.fillText('🏺', W / 2, 225);
+
+  if (isTe) {
+    ctx.font = 'bold 78px "Suranna", "Noto Sans Telugu", serif';
+    ctx.fillStyle = '#851329';
+    ctx.fillText('సారిక & సంపత్', W / 2, 320);
+  } else {
+    ctx.font = 'bold 88px "Great Vibes", cursive, serif';
+    ctx.fillStyle = '#851329';
+    ctx.fillText('Sarika & Sampath', W / 2, 320);
+  }
+
+  ctx.font = 'bold 24px "Cinzel", serif';
+  ctx.fillStyle = '#8E6A26';
+  ctx.fillText('#SamRika', W / 2, 375);
+
+  const link = document.createElement('a');
+  link.download = `Wedding_Invitation_Sarika_Sampath.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* --- Initialization on Load --- */
+window.addEventListener('DOMContentLoaded', () => {
+  initScratchCard();
+  loadCloudWishes();
+  loadCloudCounter();
+  setInterval(updateWeddingCountdown, 1000);
+  updateWeddingCountdown();
+  renderSideAndNames();
+  applyPersonalizedUrlParams();
+});
