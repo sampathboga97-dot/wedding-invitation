@@ -135,7 +135,7 @@ function handleImgError(img, baseName) {
   }
 }
 
-/* --- Audio Controls --- */
+/* --- Audio Engine & Scroll Detection --- */
 const audio = document.getElementById('weddingAudio');
 const audioIcon = document.getElementById('audioPillIcon');
 let isPlaying = false;
@@ -143,6 +143,10 @@ let isTransitioning = false;
 let audioCtx = null;
 let musicSource = null;
 let musicGain = null;
+
+const NADASWARAM_TRACK = "Divine Nadaswaram.mp3";
+const VIOLIN_TRACK = encodeURI("Violin sog From Iddarammayilatho telugu-song.mp3");
+let isViolinPlaying = false;
 
 function setupWebAudioMusic() {
   try {
@@ -208,6 +212,60 @@ function toggleAudio() {
       if (audioIcon) audioIcon.innerText = '🔊';
     }).catch(() => {});
   }
+}
+
+// 1. Play Violin immediately on card tap
+function flipStoryCard(card) {
+  if (!card) return;
+  card.classList.toggle('flipped');
+
+  if (audio && !isViolinPlaying) {
+    isViolinPlaying = true;
+    audio.pause();
+    audio.src = VIOLIN_TRACK;
+    audio.currentTime = 0;
+    audio.play().then(() => {
+      isPlaying = true;
+      if (audioIcon) audioIcon.innerText = '🔊';
+    }).catch(err => console.log("Audio switch error:", err));
+
+    document.querySelectorAll('.track-option').forEach(t => t.classList.remove('active-track'));
+  }
+}
+
+// 2. Switch back to Divine Nadaswaram when scrolling away
+function switchBackToNadaswaram() {
+  if (audio && isViolinPlaying) {
+    isViolinPlaying = false;
+    audio.pause();
+    audio.src = NADASWARAM_TRACK;
+    audio.currentTime = 0;
+    audio.play().then(() => {
+      isPlaying = true;
+      if (audioIcon) audioIcon.innerText = '🔊';
+    }).catch(err => console.log("Audio revert error:", err));
+
+    // Reset card flips back to front
+    document.querySelectorAll('.polaroid-card').forEach(c => c.classList.remove('flipped'));
+  }
+}
+
+// 3. Monitor scrolling in and out of the "Our Story" section
+function setupStoryScrollWatcher() {
+  const storySection = document.getElementById('storySection');
+  if (!storySection) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting && isViolinPlaying) {
+        switchBackToNadaswaram();
+      }
+    });
+  }, {
+    threshold: 0.15
+  });
+
+  observer.observe(storySection);
 }
 
 /* --- Scratch Card --- */
@@ -286,42 +344,6 @@ function lightTheDiya() {
       origin: { y: 0.65 },
       colors: ['#FFD700', '#FF9F1C', '#FFF275', '#E71D36']
     });
-  }
-}
-
-// Track whether the romantic violin song has already been triggered
-let isViolinPlaying = false;
-
-function flipStoryCard(card) {
-  if (!card) return;
-  
-  // Flip or unflip the clicked card
-  card.classList.toggle('flipped');
-
-  // Exact file name as uploaded in your repo (handles URL spaces/encoding cleanly)
-  const violinTrackName = "Violin sog From Iddarammayilatho telugu-song.mp3";
-
-  // Check if audio element exists and we haven't already switched to this track
-  if (audio && !isViolinPlaying) {
-    isViolinPlaying = true;
-    
-    // Smooth transition: stop current Divine Nadaswaram
-    audio.pause();
-    
-    // Switch source to the romantic violin song
-    audio.src = encodeURI(violinTrackName);
-    audio.currentTime = 0;
-    
-    // Play the new violin track
-    audio.play().then(() => {
-      isPlaying = true;
-      if (audioIcon) audioIcon.innerText = '🔊';
-    }).catch(err => {
-      console.log("Audio switch error:", err);
-    });
-
-    // Update active state in the music selector modal if open
-    document.querySelectorAll('.track-option').forEach(t => t.classList.remove('active-track'));
   }
 }
 
@@ -428,7 +450,7 @@ function escapeHtml(text) {
   });
 }
 
-/* --- Photo Booth & Voice Record Stubs --- */
+/* --- Photo Booth & Voice Record --- */
 let streamObj = null;
 let capturedSelfieBase64 = null;
 
@@ -718,7 +740,7 @@ function switchAudioTrack(trackFile, el) {
   if (el) el.classList.add('active-track');
 }
 
-// Secret Admin PIN Protection
+/* --- Admin Personalized Link Generator Modal (PIN Protected: 3010) --- */
 function openAdminModal() {
   const enteredPin = prompt("🔒 Enter Admin Security PIN:");
   
@@ -729,6 +751,7 @@ function openAdminModal() {
     alert("❌ Incorrect PIN. Access denied.");
   }
 }
+
 function closeAdminModal() {
   const m = document.getElementById('adminModal');
   if (m) m.classList.add('closed');
@@ -768,7 +791,6 @@ Sarika & Sampath ❤️
 
 View your personalized invitation: ${url}`;
 
-  // Robust clipboard copy with fallback support
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(fullInviteMessage).then(() => {
       alert(`Personalized invitation for ${name} copied to clipboard! 📋`);
@@ -832,13 +854,12 @@ function applyPersonalizedUrlParams() {
       badge.style.display = 'inline-block';
     }
 
-    // Pre-fill the admin generator input
     const adminInput = document.getElementById('adminGuestName');
     if (adminInput) adminInput.value = guestName;
   }
 }
 
-/* --- Complete Official Invitation Card Generator --- */
+/* --- Card Graphic Generator --- */
 function generateAndDownloadInvitationCard() {
   const canvas = document.getElementById('officialInviteCanvas');
   if (!canvas) return;
@@ -1049,7 +1070,9 @@ window.addEventListener('DOMContentLoaded', () => {
   updateWeddingCountdown();
   renderSideAndNames();
   applyPersonalizedUrlParams();
+  setupStoryScrollWatcher();
 });
+
 /* ========================================================
    DYNAMIC BACKEND HOTEL FETCHER (OVERPASS / OSM API)
    ======================================================== */
@@ -1083,7 +1106,6 @@ async function fetchNearbyHotelsBackend(targetListId, lat, lon, locationLabel, c
     const data = await res.json();
 
     if (data && data.elements && data.elements.length > 0) {
-      // Filter unique valid names
       const seen = new Set();
       const hotels = [];
 
@@ -1112,7 +1134,6 @@ async function fetchNearbyHotelsBackend(targetListId, lat, lon, locationLabel, c
       }
     }
 
-    // Graceful fallback if no mapped hotel node in remote radius
     fallbackDefaultHotels(container, locationLabel);
     fetchedHotelsCache[cacheKey] = true;
 
