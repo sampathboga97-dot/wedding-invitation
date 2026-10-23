@@ -1044,3 +1044,104 @@ window.addEventListener('DOMContentLoaded', () => {
   renderSideAndNames();
   applyPersonalizedUrlParams();
 });
+/* ========================================================
+   DYNAMIC BACKEND HOTEL FETCHER (OVERPASS / OSM API)
+   ======================================================== */
+
+// Memory cache so we don't repeat API calls
+const fetchedHotelsCache = {};
+
+async function toggleAccordionWithAutoFetch(contentId, lat, lon, locationLabel) {
+  const contentEl = document.getElementById(contentId);
+  if (!contentEl) return;
+
+  const isOpen = contentEl.style.display === 'block';
+  contentEl.style.display = isOpen ? 'none' : 'block';
+
+  // If opening and not yet loaded, query backend
+  if (!isOpen && !fetchedHotelsCache[contentId]) {
+    await fetchNearbyHotelsBackend(contentId + 'List', lat, lon, locationLabel, contentId);
+  }
+}
+
+async function fetchNearbyHotelsBackend(targetListId, lat, lon, locationLabel, cacheKey) {
+  const container = document.getElementById(targetListId);
+  if (!container) return;
+
+  // Overpass QL query: Search for tourism=hotel, guest_house, lodge within 6000m radius
+  const query = `[out:json][timeout:15];(nwr["tourism"~"hotel|guest_house|motel|chalet|apartment"](around:6000,${lat},${lon});nwr["amenity"="hotel"](around:6000,${lat},${lon}););out center 8;`;
+  const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data && data.elements && data.elements.length > 0) {
+      // Filter unique valid names
+      const seen = new Set();
+      const hotels = [];
+
+      for (const el of data.elements) {
+        const name = (el.tags && (el.tags.name || el.tags['name:en'])) || null;
+        if (name && !seen.has(name.toLowerCase())) {
+          seen.add(name.toLowerCase());
+          const hLat = el.lat || (el.center && el.center.lat) || lat;
+          const hLon = el.lon || (el.center && el.center.lon) || lon;
+          hotels.push({ name, lat: hLat, lon: hLon });
+        }
+      }
+
+      if (hotels.length > 0) {
+        container.innerHTML = hotels.slice(0, 5).map(h => `
+          <div class="stay-item">
+            <div class="stay-name">${escapeHtml(h.name)}</div>
+            <div class="stay-meta">Near ${locationLabel} • Live Location</div>
+            <a class="stay-map-link" target="_blank" href="https://maps.google.com/?q=${encodeURIComponent(h.name + ' ' + locationLabel)}&ll=${h.lat},${h.lon}">
+              📍 View on Google Maps
+            </a>
+          </div>
+        `).join('');
+        fetchedHotelsCache[cacheKey] = true;
+        return;
+      }
+    }
+
+    // Graceful fallback if no mapped hotel node in remote radius
+    fallbackDefaultHotels(container, locationLabel);
+    fetchedHotelsCache[cacheKey] = true;
+
+  } catch (err) {
+    fallbackDefaultHotels(container, locationLabel);
+    fetchedHotelsCache[cacheKey] = true;
+  }
+}
+
+function fallbackDefaultHotels(container, locationLabel) {
+  if (locationLabel === 'Suraram') {
+    container.innerHTML = `
+      <div class="stay-item">
+        <div class="stay-name">Hotel Tulips Grand</div>
+        <div class="stay-meta">Suraram Village Road • 0.8 km away</div>
+        <a class="stay-map-link" target="_blank" href="https://maps.google.com/?q=Hotel+Tulips+Grand+Suraram+Hyderabad">📍 View on Google Maps</a>
+      </div>
+      <div class="stay-item">
+        <div class="stay-name">Super Hotel O Suraram</div>
+        <div class="stay-meta">Near Suraram Main Rd • 1.5 km away</div>
+        <a class="stay-map-link" target="_blank" href="https://maps.google.com/?q=Hotels+near+Suraram+Hyderabad">📍 View on Google Maps</a>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="stay-item">
+        <div class="stay-name">SV AC Deluxe Lodge</div>
+        <div class="stay-meta">Hyderabad Road, Jangaon</div>
+        <a class="stay-map-link" target="_blank" href="https://maps.google.com/?q=SV+AC+Deluxe+Lodge+Jangaon">📍 View on Google Maps</a>
+      </div>
+      <div class="stay-item">
+        <div class="stay-name">Prasad Lodge</div>
+        <div class="stay-meta">Near Station Road, Jangaon</div>
+        <a class="stay-map-link" target="_blank" href="https://maps.google.com/?q=Prasad+Lodge+Jangaon">📍 View on Google Maps</a>
+      </div>
+    `;
+  }
+}
