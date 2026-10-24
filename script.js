@@ -888,12 +888,12 @@ function copyAdminLink() {
   const name = (nameEl && nameEl.value.trim()) || 'Guest';
   const url = resInput ? resInput.value : window.location.href;
 
-  const fullInviteMessage = 
+ const fullInviteMessage = 
 `Namaste ${name}! You are cordially invited to celebrate our auspicious wedding ceremony.
 Sarika & Sampath ❤️
 
 🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad
-🎉 Reception: Friday, 27 Nov 2026, 7:00 PM at Thumma Gardens, Singarajpalle (Jangaon)
+🎉 Reception: Friday, 27 Nov 2026, 11:00 AM at Thumma Gardens, Singarajpalle (Jangaon)
 
 View your personalized invitation: ${url}`;
 
@@ -933,7 +933,7 @@ function shareAdminLinkOnWhatsApp() {
   const msg = encodeURIComponent(
     `Namaste ${name}! You are cordially invited to celebrate our auspicious wedding ceremony.\nSarika & Sampath ❤️\n\n` +
     `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad\n` +
-    `🎉 Reception: Friday, 27 Nov 2026, 7:00 PM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
+    `🎉 Reception: Friday, 27 Nov 2026, 11:00 AM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
     `View your personalized invitation: ${url}`
   );
   window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
@@ -1268,7 +1268,7 @@ function generateAndDownloadInvitationCard() {
 
   ctx.font = 'bold 24px "Playfair Display", serif';
   ctx.fillStyle = '#241C16';
-  ctx.fillText(isTe ? 'శుక్రవారం, 27 నవంబర్ 2026 - సాయంత్రం 7:00 నుండి' : 'Friday, 27 November 2026 • From 7:00 PM Onwards', W / 2, curY);
+  ctx.fillText(isTe ? 'శుక్రవారం, 27 నవంబర్ 2026 - సాయంత్రం 7:00 నుండి' : 'Friday, 27 November 2026 • From 11:00 AM Onwards', W / 2, curY);
   curY += 42;
 
   // Reception Venue Box
