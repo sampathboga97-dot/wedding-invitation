@@ -122,7 +122,7 @@ function toggleLanguage() {
   if (nameInp) nameInp.placeholder = currentLang === 'en' ? 'Your Name (e.g., Ramesh Uncle)' : 'మీ పేరు (ఉదా: రమేష్ బాబాయ్)';
   if (msgInp) msgInp.placeholder = currentLang === 'en' ? 'Your blessing / wish...' : 'మీ ఆశీస్సులు / శుభాకాంక్షలు...';
   renderSideAndNames();
-  updateWeddingCountdown();
+  updateSmartEventBanner();
 }
 
 /* --- Image Fallback Handler --- */
@@ -245,7 +245,6 @@ function switchBackToNadaswaram() {
       if (audioIcon) audioIcon.innerText = '🔊';
     }).catch(err => console.log("Audio revert error:", err));
 
-    // Reset card flips back to front
     document.querySelectorAll('.polaroid-card').forEach(c => c.classList.remove('flipped'));
   }
 }
@@ -360,28 +359,123 @@ function showerTalambralu() {
   }
 }
 
-/* --- Countdown Timer --- */
-const weddingDate = new Date('2026-11-26T09:15:00+05:30').getTime();
+/* ========================================================
+   SMART EVENT COUNTDOWN & DAY-OF LIVE ENGINE
+   ======================================================== */
+const MUHURTHAM_TIME = new Date("2026-11-26T09:15:00+05:30").getTime();
+const HALDI_START = new Date("2026-11-25T00:00:00+05:30").getTime();
+const HALDI_END = new Date("2026-11-25T22:00:00+05:30").getTime();
+const WEDDING_DAY_START = new Date("2026-11-26T00:00:00+05:30").getTime();
+const RECEPTION_DAY_START = new Date("2026-11-27T00:00:00+05:30").getTime();
+const RECEPTION_EVENT_TIME = new Date("2026-11-27T11:00:00+05:30").getTime();
+const POST_WEDDING_TIME = new Date("2026-11-28T00:00:00+05:30").getTime();
 
-function updateWeddingCountdown() {
-  const now = new Date();
-  const diff = weddingDate - now.getTime();
-  const countdownRow = document.getElementById('countdownMedalsRow');
+function updateSmartEventBanner() {
+  const now = Date.now();
 
-  if (diff <= 0) {
-    if (countdownRow) countdownRow.style.display = 'none';
-    return;
+  const labelEl = document.getElementById('eventStatusLabel');
+  const headlineEl = document.getElementById('eventDynamicHeadline');
+  const subtitleEl = document.getElementById('eventDynamicSubtitle');
+  const gridEl = document.getElementById('standardCountdownGrid');
+  const actionContainer = document.getElementById('eventLiveActionContainer');
+  const actionBtn = document.getElementById('eventLiveActionBtn');
+
+  if (!headlineEl || !subtitleEl) return;
+
+  const isTe = (currentLang === 'te');
+
+  // 1. BEFORE NOV 25: Standard Countdown Clock
+  if (now < HALDI_START) {
+    if (gridEl) gridEl.style.display = 'flex';
+    if (actionContainer) actionContainer.style.display = 'none';
+
+    if (labelEl) labelEl.innerText = isTe ? "సుముహూర్తం సమయం" : "COUNTDOWN TO MUHURTHAM";
+    headlineEl.innerText = isTe ? "పవిత్ర సుముహూర్తానికి ఎదురుచూపులు" : "Counting Down to the Sacred Muhurtham";
+    subtitleEl.innerText = isTe ? "గురువారం, 26 నవంబర్ 2026 • ఉదయం 9:15 గంటలకు | VIP గార్డెన్స్, సూరారం" : "Thursday, November 26, 2026 • 9:15 AM IST at VIP Gardens";
+
+    const diff = Math.max(0, MUHURTHAM_TIME - now);
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const elD = document.getElementById('cdDays');
+    const elH = document.getElementById('cdHours');
+    const elM = document.getElementById('cdMinutes');
+    const elS = document.getElementById('cdSeconds');
+
+    if (elD) elD.innerText = String(d).padStart(2, '0');
+    if (elH) elH.innerText = String(h).padStart(2, '0');
+    if (elM) elM.innerText = String(m).padStart(2, '0');
+    if (elS) elS.innerText = String(s).padStart(2, '0');
   }
 
-  const dEl = document.getElementById('days');
-  const hEl = document.getElementById('hours');
-  const mEl = document.getElementById('mins');
-  const sEl = document.getElementById('secs');
+  // 2. NOV 25: Haldi Ceremony Phase
+  else if (now >= HALDI_START && now < WEDDING_DAY_START) {
+    if (gridEl) gridEl.style.display = 'none';
+    if (actionContainer) actionContainer.style.display = 'none';
 
-  if (dEl) dEl.innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-  if (hEl) hEl.innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-  if (mEl) mEl.innerText = String(Math.floor((diff % (1000 * 60)) / (1000 * 60))).padStart(2, '0');
-  if (sEl) sEl.innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+    if (now < HALDI_END) {
+      if (labelEl) labelEl.innerText = isTe ? "నేడు: పవిత్ర పసుపు వేడుక 🌼" : "TODAY: HALDI CEREMONY 🌼";
+      headlineEl.innerText = isTe ? "నేటి సాయంత్రం హల్దీ వేడుక ప్రారంభం!" : "Haldi Ceremony Underway!";
+      subtitleEl.innerText = isTe ? "ఈ రోజు సాయంత్రం జరిగే మంగళకరమైన పసుపు వేడుకకు విచ్చేసి వధూవరులను ఆశీర్వదించండి!" : "The auspicious Haldi celebration is taking place this evening. Please join us in showering blessings!";
+    } else {
+      if (labelEl) labelEl.innerText = isTe ? "హల్దీ వేడుక పూర్తయింది ✨" : "HALDI CELEBRATED ✨";
+      headlineEl.innerText = isTe ? "హల్దీ వేడుక ముగిసింది" : "Haldi Ceremony Completed";
+      subtitleEl.innerText = isTe ? "రేపే పవిత్ర కల్యాణ మహోత్సవం! సూరారంలోని VIP గార్డెన్స్‌లో కలుసుకుందాం." : "Tomorrow begins the sacred journey! Get ready for the Kalyanam at VIP Gardens, Suraram.";
+    }
+  }
+
+  // 3. NOV 26: Wedding Day Phase (VIP Gardens, Suraram)
+  else if (now >= WEDDING_DAY_START && now < RECEPTION_DAY_START) {
+    if (gridEl) gridEl.style.display = 'none';
+    if (actionContainer) actionContainer.style.display = 'block';
+
+    if (actionBtn) {
+      actionBtn.innerText = isTe ? "📍 VIP గార్డెన్స్ రూట్ మ్యాప్" : "📍 Open Navigation to VIP Gardens";
+      actionBtn.href = "https://maps.google.com/?q=VIP+Gardens+Suraram+Hyderabad";
+    }
+
+    if (now < MUHURTHAM_TIME) {
+      if (labelEl) labelEl.innerText = isTe ? "నేడే వివాహ మహోత్సవం! 💍" : "TODAY IS THE WEDDING DAY! 💍";
+      headlineEl.innerText = isTe ? "నేడు నూతన జీవితం ఆరంభం!" : "Today the Sacred Journey Begins!";
+      subtitleEl.innerText = isTe ? "ఈ రోజే మా వివాహ వేడుక VIP గార్డెన్స్, సూరారంలో జరుగుతుంది. సుముహూర్తం ఉదయం 9:15 గంటలకు." : "Marriage ceremony takes place today at VIP Gardens, Suraram. Muhurtham at 9:15 AM.";
+    } else {
+      if (labelEl) labelEl.innerText = isTe ? "కల్యాణం సంపన్నం! 💖" : "JUST MARRIED! 💖";
+      headlineEl.innerText = isTe ? "సుముహూర్తం దివ్యంగా ముగిసింది!" : "Sacred Muhurtham Completed!";
+      subtitleEl.innerText = isTe ? "సారిక & సంపత్ వివాహ బంధంతో ఒక్కటయ్యారు! నూతన దంపతులు తమ కొత్త ప్రయాణాన్ని ఆనందంగా ప్రారంభించేందుకు మీ ఆశీస్సులు అందించండి." : "Sarika & Sampath are now united in marriage! Please shower your heartfelt blessings upon the newly wedded couple for their beautiful new life together.";
+    }
+  }
+
+  // 4. NOV 27: Reception Day Phase (Thumma Gardens, Jangaon)
+  else if (now >= RECEPTION_DAY_START && now < POST_WEDDING_TIME) {
+    if (gridEl) gridEl.style.display = 'none';
+    if (actionContainer) actionContainer.style.display = 'block';
+
+    if (actionBtn) {
+      actionBtn.innerText = isTe ? "📍 తుమ్మ గార్డెన్స్ రూట్ మ్యాప్" : "📍 Open Navigation to Thumma Gardens";
+      actionBtn.href = "https://maps.google.com/?q=Thumma+Gardens+Jangaon";
+    }
+
+    if (now < RECEPTION_EVENT_TIME) {
+      if (labelEl) labelEl.innerText = isTe ? "నేడు: గ్రాండ్ రిసెప్షన్ వేడుక ✨" : "TODAY: GRAND RECEPTION ✨";
+      headlineEl.innerText = isTe ? "నేడు గ్రాండ్ రిసెప్షన్ వేడుక!" : "Grand Reception Celebration Today!";
+      subtitleEl.innerText = isTe ? "వేడుకలు ఉదయం 11:00 గంటలకు తుమ్మ గార్డెన్స్, జనగామ (సింగరాజుపల్లి) నందు ప్రారంభం. విందు మరియు వేడుకలకు సాదర ఆహ్వానం!" : "Celebrations begin at 11:00 AM at Thumma Gardens, Jangaon. Join us for lunch, warm blessings, and celebrations!";
+    } else {
+      if (labelEl) labelEl.innerText = isTe ? "రిసెప్షన్ వేడుక జరుగుతోంది 🥂" : "RECEPTION IN PROGRESS 🥂";
+      headlineEl.innerText = isTe ? "తుమ్మ గార్డెన్స్‌కు సాదర సుస్వాగతం!" : "Welcome to the Grand Reception!";
+      subtitleEl.innerText = isTe ? "వేడుకలు వైభవంగా జరుగుతున్నాయి. సారిక & సంపత్ లతో కలిసి ఈ ఆనందంలో పాలుపంచుకుంటున్నందుకు ధన్యవాదాలు!" : "Celebrations are in full swing at Thumma Gardens. Thank you for joining Sarika & Sampath on this joyful day!";
+    }
+  }
+
+  // 5. AFTER NOV 27: Gratitude / Thank You Mode
+  else {
+    if (gridEl) gridEl.style.display = 'none';
+    if (actionContainer) actionContainer.style.display = 'none';
+    if (labelEl) labelEl.innerText = isTe ? "హృదయపూర్వక ధన్యవాదాలు 🙏" : "FOREVER GRATEFUL 🙏";
+    headlineEl.innerText = isTe ? "మీ ప్రేమ మరియు ఆశీస్సులకు ధన్యవాదాలు!" : "Thank You for Your Blessings!";
+    subtitleEl.innerText = isTe ? "సారిక & సంపత్ ల వివాహ వేడుకకు విచ్చేసి, మమ్మల్ని ఆశీర్వదించిన బంధుమిత్రులందరికీ పేరుపేరునా మా హృదయపూర్వక ధన్యవాదాలు." : "Our heartfelt thanks to family, relatives, and friends for gracing Sarika & Sampath's wedding with love, presence, and prayers.";
+  }
 }
 
 /* --- Firebase Blessings Counter & Wall --- */
@@ -691,11 +785,11 @@ async function submitRsvp() {
 
   const name = nameInput ? nameInput.value.trim() : "";
   if (!name) {
-    alert("Please enter your name for the RSVP.");
+    alert(currentLang === 'te' ? "దయచేసి మీ పేరును నమోదు చేయండి." : "Please enter your name for the RSVP.");
     return;
   }
 
-  if (btn) { btn.disabled = true; btn.innerText = "Submitting..."; }
+  if (btn) { btn.disabled = true; btn.innerText = currentLang === 'te' ? "నమోదు అవుతోంది..." : "Submitting..."; }
 
   try {
     await fetch(RSVP_ENDPOINT, {
@@ -703,19 +797,29 @@ async function submitRsvp() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: name,
-        attendance: attSelect ? attSelect.value : "",
-        guestsCount: countSelect ? countSelect.value : "",
+        attendance: attSelect ? attSelect.value : "Attending Both Events",
+        guestsCount: countSelect ? countSelect.value : "1",
+        side: selectedSide || "not_specified",
+        submittedAt: new Date().toISOString(),
         timestamp: Date.now()
       })
     });
 
     if (nameInput) nameInput.value = '';
-    if (successMsg) successMsg.style.display = 'block';
+    if (successMsg) {
+      successMsg.innerText = currentLang === 'te' 
+        ? "✅ ధన్యవాదాలు! మీ హాజరు వివరాలు నమోదు చేయబడ్డాయి." 
+        : "✅ Thank you! Your attendance response has been received.";
+      successMsg.style.display = 'block';
+    }
     triggerHeartbeatPulse();
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 50, spread: 70, origin: { y: 0.75 }, colors: ['#D4AF37', '#851329', '#2E7D32'] });
+    }
   } catch (e) {
-    alert("RSVP submitted. Thank you!");
+    alert(currentLang === 'te' ? "సమస్య ఏర్పడింది. దయచేసి మళ్లీ ప్రయత్నించండి." : "Could not submit RSVP. Please check your internet connection.");
   } finally {
-    if (btn) { btn.disabled = false; btn.innerText = "Confirm RSVP"; }
+    if (btn) { btn.disabled = false; btn.innerText = currentLang === 'te' ? "ధృవీకరించండి" : "Confirm RSVP"; }
   }
 }
 
@@ -747,7 +851,7 @@ function openAdminModal() {
     const m = document.getElementById('adminModal');
     if (m) {
       m.classList.remove('closed');
-      loadAdminRsvps(); // <-- Automatically pulls live RSVPs on unlock
+      loadAdminRsvps();
     }
   } else if (enteredPin !== null) {
     alert("❌ Incorrect PIN. Access denied.");
@@ -763,14 +867,13 @@ function generatePersonalizedAdminLink() {
   const nameEl = document.getElementById('adminGuestName');
   const sideEl = document.getElementById('adminSideSelect');
   const name = nameEl ? nameEl.value.trim() : "";
-  const side = sideEl ? sideEl.value : "groom"; // 'groom' or 'bride'
+  const side = sideEl ? sideEl.value : "groom";
 
   if (!name) {
     alert("Please enter the guest's name (e.g. Kishore Mama)");
     return;
   }
 
-  // Base URL without query params or hashes
   const cleanBase = window.location.origin + window.location.pathname;
   const finalUrl = `${cleanBase}?guest=${encodeURIComponent(name)}&side=${encodeURIComponent(side)}`;
 
@@ -843,25 +946,19 @@ function applyPersonalizedUrlParams() {
   const guestName = params.get('guest');
   const sideParam = params.get('side');
 
-  // 1. If side parameter exists ('groom' or 'bride'), assign it strictly
   if (sideParam && (sideParam.toLowerCase() === 'groom' || sideParam.toLowerCase() === 'bride')) {
     selectedSide = sideParam.toLowerCase();
-    
-    // Also keep the admin generator dropdown matched
     const sideSelect = document.getElementById('adminSideSelect');
     if (sideSelect) sideSelect.value = selectedSide;
   }
 
-  // 2. Render names & parents right away based on the selected side
   renderSideAndNames();
 
-  // 3. Keep the side picker modal OPEN so the guest sees the choice screen
   const modal = document.getElementById('sidePickerModal');
   if (modal) {
-    modal.classList.remove('closed'); // Ensure it is visible to the guest
+    modal.classList.remove('closed');
   }
 
-  // 4. If guest name is provided, display personalized welcome badge
   if (guestName) {
     const badge = document.getElementById('personalizedGuestBadge');
     if (badge) {
@@ -873,6 +970,7 @@ function applyPersonalizedUrlParams() {
     if (adminInput) adminInput.value = guestName;
   }
 }
+
 /* --- Corrected Admin RSVP Engine --- */
 let rawRsvpList = [];
 let currentRsvpFilter = 'all';
@@ -923,7 +1021,7 @@ function filterRsvpView(filterType) {
 }
 
 function normalizeRsvpSide(sideVal) {
-  if (!sideVal) return 'groom'; // Default unassigned/older test entries to groom
+  if (!sideVal) return 'groom';
   const s = String(sideVal).toLowerCase().trim();
   if (s.includes('bride') || s === 'bride') return 'bride';
   return 'groom';
@@ -938,7 +1036,6 @@ function renderFilteredRsvps() {
 
   if (!container) return;
 
-  // 1. Calculate overall counts consistently using normalized side
   let totalGroomGuests = 0;
   let totalBrideGuests = 0;
 
@@ -955,7 +1052,6 @@ function renderFilteredRsvps() {
   if (groomCountEl) groomCountEl.innerText = totalGroomGuests;
   if (brideCountEl) brideCountEl.innerText = totalBrideGuests;
 
-  // 2. Filter list based on current active tab
   const displayList = rawRsvpList.filter(item => {
     if (currentRsvpFilter === 'all') return true;
     return normalizeRsvpSide(item.side) === currentRsvpFilter;
@@ -1001,6 +1097,7 @@ function renderFilteredRsvps() {
   if (countEl) countEl.innerText = displayList.length;
   if (sumEl) sumEl.innerText = activeGuestsSum;
 }
+
 /* --- Card Graphic Generator --- */
 function generateAndDownloadInvitationCard() {
   const canvas = document.getElementById('officialInviteCanvas');
@@ -1208,8 +1305,11 @@ window.addEventListener('DOMContentLoaded', () => {
   initScratchCard();
   loadCloudWishes();
   loadCloudCounter();
-  setInterval(updateWeddingCountdown, 1000);
-  updateWeddingCountdown();
+  
+  // Smart live banner engine runs every second
+  updateSmartEventBanner();
+  setInterval(updateSmartEventBanner, 1000);
+
   renderSideAndNames();
   applyPersonalizedUrlParams();
   setupStoryScrollWatcher();
@@ -1229,7 +1329,6 @@ async function toggleAccordionWithAutoFetch(contentId, lat, lon, locationLabel) 
   const isOpen = contentEl.style.display === 'block';
   contentEl.style.display = isOpen ? 'none' : 'block';
 
-  // If opening and not yet loaded, query backend
   if (!isOpen && !fetchedHotelsCache[contentId]) {
     await fetchNearbyHotelsBackend(contentId + 'List', lat, lon, locationLabel, contentId);
   }
@@ -1239,7 +1338,6 @@ async function fetchNearbyHotelsBackend(targetListId, lat, lon, locationLabel, c
   const container = document.getElementById(targetListId);
   if (!container) return;
 
-  // Overpass QL query: Search for tourism=hotel, guest_house, lodge within 6000m radius
   const query = `[out:json][timeout:15];(nwr["tourism"~"hotel|guest_house|motel|chalet|apartment"](around:6000,${lat},${lon});nwr["amenity"="hotel"](around:6000,${lat},${lon}););out center 8;`;
   const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
