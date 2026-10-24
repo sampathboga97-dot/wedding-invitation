@@ -411,15 +411,27 @@
             </div>
           </div>
 
-          <!-- Logistics Support -->
+       <!-- Logistics Support -->
           <div style="margin-top: 10px;">
             <button class="help-drawer-pill" onclick="toggleAccordion('kalyanamContacts')">
               📞 Need assistance reaching the venue?
             </button>
             <div class="stay-accordion-content" id="kalyanamContacts">
-              <div class="emergency-call-row">
-                <a class="call-btn" href="tel:+917675975990">📞 Call Sampath</a>
-                <a class="call-btn" style="background:#8E6A26;" href="tel:+919848011223">📞 Family Help</a>
+              <div class="emergency-call-row" style="display: flex; flex-direction: column; gap: 8px;">
+                <a class="call-btn" href="tel:+917675975990" style="text-align: center; text-decoration: none;">
+                  📞 Call Sampath
+                </a>
+                
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <!-- Groom's Family Help -->
+                  <a class="call-btn" style="flex: 1; background: #8E6A26; min-width: 130px; text-align: center; text-decoration: none;" href="tel:+919573553076">
+                    📞 Groom's Help
+                  </a>
+                  <!-- Bride's Family Help -->
+                  <a class="call-btn" style="flex: 1; background: #851329; min-width: 130px; text-align: center; text-decoration: none;" href="tel:+919490025865">
+                    📞 Bride's Help
+                  </a>
+                </div>
               </div>
             </div>
           </div>
