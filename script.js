@@ -705,8 +705,8 @@ function downloadIcsFile(type) {
   if (type === 'reception') {
     title = "Wedding Reception of Sarika & Sampath";
     location = "Thumma Gardens, Singarajpalle, Jangaon - Suryapet Rd, Telangana 506303";
-    start = "20261127T133000Z";
-    end = "20261127T173000Z";
+    start = "20261127T053000Z";
+    end = "20261127T103000Z";
     desc = "Grand Wedding Reception of Sarika & Sampath #SamRika";
   }
 
