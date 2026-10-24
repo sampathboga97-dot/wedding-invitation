@@ -329,11 +329,47 @@
             </button>
           </div>
 
-          <div class="countdown-medals" id="countdownMedalsRow">
-            <div class="medal-item"><div class="medal-val" id="days">--</div><div class="medal-lbl">Days</div></div>
-            <div class="medal-item"><div class="medal-val" id="hours">--</div><div class="medal-lbl">Hours</div></div>
-            <div class="medal-item"><div class="medal-val" id="mins">--</div><div class="medal-lbl">Mins</div></div>
-            <div class="medal-item"><div class="medal-val" id="secs">--</div><div class="medal-lbl">Secs</div></div>
+          <!-- DYNAMIC SMART EVENT BANNER & COUNTDOWN -->
+          <div id="smartBannerSection" class="smart-banner-wrapper">
+            <!-- Live Status Pill -->
+            <div id="eventStatusPill" class="live-status-pill">
+              <span class="live-dot"></span> <span id="eventStatusLabel">COUNTDOWN TO MUHURTHAM</span>
+            </div>
+
+            <!-- Dynamic Heading & Message -->
+            <h3 id="eventDynamicHeadline" class="dynamic-headline">
+              Counting Down to the Sacred Muhurtham
+            </h3>
+            <p id="eventDynamicSubtitle" class="dynamic-subtitle">
+              November 26, 2026 • 9:15 AM IST
+            </p>
+
+            <!-- Standard Numbers Countdown Grid (Visible before Nov 25) -->
+            <div id="standardCountdownGrid" class="countdown-grid">
+              <div class="time-box">
+                <span class="time-val" id="cdDays">00</span>
+                <span class="time-lbl">Days</span>
+              </div>
+              <div class="time-box">
+                <span class="time-val" id="cdHours">00</span>
+                <span class="time-lbl">Hours</span>
+              </div>
+              <div class="time-box">
+                <span class="time-val" id="cdMinutes">00</span>
+                <span class="time-lbl">Mins</span>
+              </div>
+              <div class="time-box">
+                <span class="time-val" id="cdSeconds">00</span>
+                <span class="time-lbl">Secs</span>
+              </div>
+            </div>
+
+            <!-- Day-of Action Button (Appears dynamically on event days) -->
+            <div id="eventLiveActionContainer" style="display: none; margin-top: 14px;">
+              <a id="eventLiveActionBtn" target="_blank" href="#" class="live-action-btn">
+                📍 Open Live Venue Navigation
+              </a>
+            </div>
           </div>
         </div>
 
