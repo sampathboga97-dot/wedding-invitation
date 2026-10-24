@@ -1165,3 +1165,113 @@ body {
 .stay-action-pill:active {
   transform: scale(0.96);
 }
+/* --- Smart Event & Countdown Live Styles --- */
+.smart-banner-wrapper {
+  background: linear-gradient(135deg, #FFFDF8 0%, #FAF2E1 100%);
+  border: 1.5px solid #DFC394;
+  border-radius: 14px;
+  padding: 16px 12px;
+  margin: 16px auto 6px auto;
+  max-width: 500px;
+  box-shadow: 0 4px 15px rgba(133, 19, 41, 0.06);
+  text-align: center;
+}
+
+.live-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFF;
+  border: 1px solid #DFC394;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #851329;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background-color: #2E7D32;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 rgba(46, 125, 50, 0.4);
+  animation: pulseLiveDot 1.8s infinite;
+}
+
+@keyframes pulseLiveDot {
+  0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.6); }
+  70% { box-shadow: 0 0 0 7px rgba(46, 125, 50, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+}
+
+.dynamic-headline {
+  font-family: 'Cinzel', serif;
+  font-size: 1.08rem;
+  color: #851329;
+  margin: 4px 0 6px 0;
+  line-height: 1.35;
+}
+
+.dynamic-subtitle {
+  font-size: 0.8rem;
+  color: #6C5238;
+  margin: 0 auto 10px auto;
+  max-width: 420px;
+  line-height: 1.4;
+}
+
+.countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.time-box {
+  flex: 1;
+  max-width: 72px;
+  background: #FFFFFF;
+  border: 1px solid #E6D4B7;
+  border-radius: 8px;
+  padding: 8px 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.time-val {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #851329;
+  font-family: 'Cinzel', serif;
+}
+
+.time-lbl {
+  display: block;
+  font-size: 0.65rem;
+  color: #7D6B53;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.live-action-btn {
+  display: inline-block;
+  background: #851329;
+  color: #FFF !important;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 24px;
+  box-shadow: 0 3px 10px rgba(133, 19, 41, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.live-action-btn:active {
+  transform: scale(0.96);
+}
