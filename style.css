@@ -1131,3 +1131,37 @@ body {
   text-decoration: underline;
   margin-top: 4px;
 }
+/* --- Reception Stay Action Buttons --- */
+.stay-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.stay-action-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+.stay-action-pill.call {
+  background: #E8F5E9;
+  color: #1B5E20;
+  border: 1px solid #A5D6A7;
+}
+
+.stay-action-pill.map {
+  background: #E3F2FD;
+  color: #0D47A1;
+  border: 1px solid #90CAF9;
+}
+
+.stay-action-pill:active {
+  transform: scale(0.96);
+}
