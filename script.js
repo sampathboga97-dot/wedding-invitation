@@ -744,13 +744,12 @@ function toggleAccordion(id) {
   el.style.display = (el.style.display === 'block') ? 'none' : 'block';
 }
 
-/* --- WhatsApp Share --- */
 function shareViaWhatsApp() {
   const url = window.location.href;
   const msg = encodeURIComponent(
     `Namaste! You are cordially invited to celebrate our auspicious wedding ceremony.\nSarika & Sampath ❤️\n\n` +
     `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad\n` +
-    `🎉 Reception: Friday, 27 Nov 2026, 7:00 PM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
+    `🎉 Reception: Friday, 27 Nov 2026, 11:00 AM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
     `View our wedding invitation: ${url}`
   );
   window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
