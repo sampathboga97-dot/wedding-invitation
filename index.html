@@ -505,7 +505,58 @@
               <span>💬 Contact Host</span>
             </a>
           </div>
-          <!-- Reception Assistance Contact Block -->
+
+          <!-- Verified Stays in Jangaon (Inside the card) -->
+          <div style="margin-top: 10px;">
+            <button type="button" class="stay-accordion-toggle" onclick="toggleAccordion('receptionStays')">
+              <span>🏨 Nearby Stays &amp; Hotels</span>
+              <span>▼</span>
+            </button>
+
+            <div class="stay-accordion-content" id="receptionStays" style="display: none;">
+              <!-- 1. Hotel AR Grand -->
+              <div class="stay-item">
+                <div class="stay-name">Hotel AR Grand (Luxury Rooms) ⭐ 4.6</div>
+                <div class="stay-meta">
+                  📍 1st Floor, Above Honda Showroom, Glory Plaza, Hyderabad Main Rd, Jangaon<br>
+                  ✨ AC/Non-AC Luxury Rooms, Lift &amp; Cellar Parking
+                </div>
+                <div class="stay-actions-row">
+                  <a class="stay-action-pill call" href="tel:+916309793151">📞 +91 63097 93151</a>
+                  <a class="stay-action-pill map" target="_blank" href="https://maps.google.com/?q=Hotel+AR+Grand+Jangaon">📍 Directions</a>
+                </div>
+              </div>
+
+              <!-- 2. SV Lodge / Hotel Jangaon -->
+              <div class="stay-item">
+                <div class="stay-name">SV Lodge / Hotel Jangaon ⭐ 3.7</div>
+                <div class="stay-meta">
+                  📍 Behind Akshaya Hotel, Kurumawada, Balaji Nagar, Jangaon<br>
+                  ✨ Budget-friendly lodge near Jangaon Bus Stand
+                </div>
+                <div class="stay-actions-row">
+                  <a class="stay-action-pill call" href="tel:+919346617933">📞 +91 93466 17933</a>
+                  <a class="stay-action-pill map" target="_blank" href="https://maps.google.com/?q=SV+Lodge+Jangaon">📍 Directions</a>
+                </div>
+              </div>
+
+              <!-- 3. Shiva Lodge -->
+              <div class="stay-item">
+                <div class="stay-name">Shiva Lodge Jangaon ⭐ 3.7</div>
+                <div class="stay-meta">
+                  📍 Near Jangaon Chowrasta, Beside Indian Petrol Pump, Balaji Nagar<br>
+                  ✨ Budget stay located right in main town center
+                </div>
+                <div class="stay-actions-row">
+                  <a class="stay-action-pill call" href="tel:+919100005609">📞 +91 91000 05609</a>
+                  <a class="stay-action-pill call" href="tel:+919666377176">📞 +91 96663 77176</a>
+                  <a class="stay-action-pill map" target="_blank" href="https://maps.google.com/?q=Shiva+Lodge+Jangaon">📍 Directions</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reception Assistance Contact Block (Inside the card) -->
           <div style="margin-top: 10px;">
             <button type="button" class="help-drawer-pill" onclick="toggleAccordion('receptionContacts')">
               📞 Need assistance reaching the venue?
@@ -518,57 +569,12 @@
                 <a class="call-btn" href="tel:+919573553076" style="flex: 1; min-width: 135px; background: #851329; color: #FFFFFF; text-decoration: none; padding: 8px 12px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; text-align: center; box-shadow: 0 2px 6px rgba(133, 19, 41, 0.2);">
                   📞 9573553076
                 </a>
+        
               </div>
             </div>
           </div>
+
         </div>
-         <!-- Verified Stays in Jangaon -->
-          <button type="button" class="stay-accordion-toggle" onclick="toggleAccordion('receptionStays')">
-            <span>🏨 Nearby Stays &amp; Hotels</span>
-            <span>▼</span>
-          </button>
-
-          <div class="stay-accordion-content" id="receptionStays" style="display: none;">
-            <!-- 1. Hotel AR Grand -->
-            <div class="stay-item">
-              <div class="stay-name">Hotel AR Grand (Luxury Rooms) ⭐ 4.6</div>
-              <div class="stay-meta">
-                📍 1st Floor, Above Honda Showroom, Glory Plaza, Hyderabad Main Rd, Jangaon<br>
-                ✨ AC/Non-AC Luxury Rooms, Lift &amp; Cellar Parking
-              </div>
-              <div class="stay-actions-row">
-                <a class="stay-action-pill call" href="tel:+916309793151">📞 +91 63097 93151</a>
-                <a class="stay-action-pill map" target="_blank" href="https://maps.google.com/?q=Hotel+AR+Grand+Jangaon">📍 Directions</a>
-              </div>
-            </div>
-
-            <!-- 2. SV Lodge / Hotel Jangaon -->
-            <div class="stay-item">
-              <div class="stay-name">SV Lodge / Hotel Jangaon ⭐ 3.7</div>
-              <div class="stay-meta">
-                📍 Behind Akshaya Hotel, Kurumawada, Balaji Nagar, Jangaon<br>
-                ✨ Budget-friendly lodge near Jangaon Bus Stand
-              </div>
-              <div class="stay-actions-row">
-                <a class="stay-action-pill call" href="tel:+919346617933">📞 +91 93466 17933</a>
-                <a class="stay-action-pill map" target="_blank" href="https://maps.google.com/?q=SV+Lodge+Jangaon">📍 Directions</a>
-              </div>
-            </div>
-
-            <!-- 3. Shiva Lodge -->
-            <div class="stay-item">
-              <div class="stay-name">Shiva Lodge Jangaon ⭐ 3.7</div>
-              <div class="stay-meta">
-                📍 Near Jangaon Chowrasta, Beside Indian Petrol Pump, Balaji Nagar<br>
-                ✨ Budget stay located right in main town center
-              </div>
-              <div class="stay-actions-row">
-                <a class="stay-action-pill call" href="tel:+919100005609">📞 +91 91000 05609</a>
-                <a class="stay-action-pill call" href="tel:+919666377176">📞 +91 96663 77176</a>
-                <a class="stay-action-pill map" target="_blank" href="https://maps.google.com/?q=Shiva+Lodge+Jangaon">📍 Directions</a>
-              </div>
-            </div>
-          </div>
 
         <!-- 4. DRESS CODE & COLOR PALETTE -->
         <div class="feature-card-box">
