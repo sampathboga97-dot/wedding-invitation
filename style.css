@@ -25,6 +25,7 @@ body {
   padding: 14px 6px;
 }
 
+
 /* TOP ACTION BAR */
 .top-action-bar {
   position: fixed;
@@ -1274,4 +1275,64 @@ body {
 
 .live-action-btn:active {
   transform: scale(0.96);
+}
+/* --- Distinct Category Label --- */
+.venue-category-pill {
+  display: inline-block;
+  background: #FFF8EA;
+  color: #851329;
+  border: 1px solid #E2CCA6;
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 14px auto 10px auto;
+  box-shadow: 0 2px 6px rgba(133, 19, 41, 0.05);
+}
+
+/* --- Separate Gold-Shaded Hall Name Card --- */
+.hall-name-gold-box {
+  background: linear-gradient(135deg, #FFFDF8 0%, #FAF0D6 50%, #F5E2B5 100%);
+  border: 1.5px solid #C89B2B;
+  border-radius: 14px;
+  padding: 6px;
+  margin: 0 auto 12px auto;
+  max-width: 360px;
+  box-shadow: 0 4px 14px rgba(200, 155, 43, 0.18), inset 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.hall-name-inner-gold {
+  border: 1px dashed #B8861B;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.hall-brand-ornament {
+  font-size: 0.85rem;
+  color: #9E741D;
+  margin-bottom: 2px;
+  letter-spacing: 3px;
+}
+
+.hall-brand-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #6C1525;
+  letter-spacing: 2px;
+  line-height: 1.2;
+}
+
+.hall-brand-sub {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.76rem;
+  font-style: italic;
+  color: #7A570D;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
 }
