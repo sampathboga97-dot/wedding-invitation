@@ -467,16 +467,21 @@
           </div>
         </div>
          
-
-        <!-- 3. GRAND RECEPTION EVENT CARD -->
+<!-- 3. GRAND RECEPTION EVENT CARD -->
         <div class="event-card" style="border: 2px solid #C89B2B; background: radial-gradient(circle at center, #FFFDF8 0%, #FAF0D8 100%);">
           <div class="event-tag" style="color:#7A570D;" data-en="GRAND RECEPTION" data-te="రిసెప్షన్ వేడుక">GRAND RECEPTION</div>
-          <div class="event-subtitle">Join us to celebrate the joyous evening with the newlyweds</div>
-          <div style="font-size: 1.15rem; font-weight:800; color:var(--maroon-primary);">Friday, 27 November 2026</div>
-          <div class="event-time-highlight" style="font-size:1.6rem;">From 11:00 AM Onwards</div>
+          <div class="event-subtitle" data-en="Join us to celebrate the joyous day with the newlyweds" data-te="వధూవరులతో కలిసి ఈ ఆనందకరమైన రోజును జరుపుకోవడానికి విచ్చేయండి">
+            Join us to celebrate the joyous day with the newlyweds
+          </div>
+          <div style="font-size: 1.15rem; font-weight:800; color:var(--maroon-primary);" data-en="Friday, 27 November 2026" data-te="శుక్రవారం, 27 నవంబర్ 2026">
+            Friday, 27 November 2026
+          </div>
+          <div class="event-time-highlight" style="font-size:1.6rem;" data-en="From 11:00 AM Onwards" data-te="ఉదయం 11:00 గంటల నుండి">
+            From 11:00 AM Onwards
+          </div>
 
           <div class="calendar-btn-row">
-            <a class="cal-btn" target="_blank" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+Reception:+Sarika+%26+Sampath&dates=20261127T133000Z/20261127T173000Z&details=Reception+at+Thumma+Gardens,+Singarajpalle+(Jangaon).&location=Thumma+Gardens,+Singarajpalle,+Telangana">
+            <a class="cal-btn" target="_blank" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+Reception:+Sarika+%26+Sampath&dates=20261127T053000Z/20261127T103000Z&details=Reception+at+Thumma+Gardens,+Singarajpalle+(Jangaon).&location=Thumma+Gardens,+Singarajpalle,+Telangana">
               📅 Google Calendar
             </a>
             <button type="button" class="cal-btn" onclick="downloadIcsFile('reception')">
@@ -500,7 +505,23 @@
               <span>💬 Contact Host</span>
             </a>
           </div>
-
+          <!-- Reception Assistance Contact Block -->
+          <div style="margin-top: 10px;">
+            <button type="button" class="help-drawer-pill" onclick="toggleAccordion('receptionContacts')">
+              📞 Need assistance reaching the venue?
+            </button>
+            <div class="stay-accordion-content" id="receptionContacts" style="display: none; background: #FAF5EB; border: 1px solid #DFC394; border-top: none; border-radius: 0 0 8px 8px; padding: 12px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #6A4B1A; font-weight: 600; margin-bottom: 8px;">
+                For route assistance or venue directions in Jangaon:
+              </div>
+              <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                <a class="call-btn" href="tel:+919573553076" style="flex: 1; min-width: 135px; background: #851329; color: #FFFFFF; text-decoration: none; padding: 8px 12px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; text-align: center; box-shadow: 0 2px 6px rgba(133, 19, 41, 0.2);">
+                  📞 9573553076
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
          <!-- Verified Stays in Jangaon -->
           <button type="button" class="stay-accordion-toggle" onclick="toggleAccordion('receptionStays')">
             <span>🏨 Nearby Stays &amp; Hotels</span>
