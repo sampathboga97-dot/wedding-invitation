@@ -1207,7 +1207,7 @@ function generateAndDownloadInvitationCard() {
   ctx.fillText(isTe ? "వధువు తల్లిదండ్రులు" : "BRIDE'S PARENTS", W / 2, curY + 28);
   ctx.font = 'bold 20px "Playfair Display", serif';
   ctx.fillStyle = '#2F2620';
-  ctx.fillText('Deshaboina Venkateshwara Prabhu & Mrs. Sharadamba', W / 2, curY + 62);
+  ctx.fillText('Smt Sharadamba & Deshaboina Venkateshwara Prabhu Garu', W / 2, curY + 62);
   curY += 105;
 
   // Groom's Parents Box
@@ -1224,7 +1224,7 @@ function generateAndDownloadInvitationCard() {
   ctx.fillText(isTe ? "వరుని తల్లిదండ్రులు" : "GROOM'S PARENTS", W / 2, curY + 28);
   ctx.font = 'bold 20px "Playfair Display", serif';
   ctx.fillStyle = '#2F2620';
-  ctx.fillText('Boga Ashok & Mrs. Geetha', W / 2, curY + 62);
+  ctx.fillText('Smt Geeha & Boga Ashok Garu', W / 2, curY + 62);
   curY += 125;
 
   // MUHURTHAM SECTION
