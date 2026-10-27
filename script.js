@@ -9,12 +9,12 @@ let currentLang = 'en';
 /* --- Names & Greetings Data --- */
 const namesData = {
   brideParents: {
-    en: `Deshaboina Venkateshwara Prabhu<span class="parent-connector">&amp;</span>Mrs. Sharadamba`,
-    te: `దేశబోయిన వెంకటేశ్వర ప్రభు<span class="parent-connector">&amp;</span>శ్రీమతి శారదాంబ`
+    en: `Smt. Sharadamba<span class="parent-connector">&amp;</span>Sri Deshaboina Venkateshwara Prabhu Garu`,
+    te: `శ్రీమతి శారదాంబ<span class="parent-connector">&amp;</span>శ్రీ దేశబోయిన వెంకటేశ్వర ప్రభు గారు`
   },
   groomParents: {
-    en: `Boga Ashok<span class="parent-connector">&amp;</span>Mrs. Geetha`,
-    te: `బోగ అశోక్<span class="parent-connector">&amp;</span>శ్రీమతి గీత`
+    en: `Smt. Geetha<span class="parent-connector">&amp;</span>Sri Boga Ashok Garu`,
+    te: `శ్రీమతి గీత<span class="parent-connector">&amp;</span>శ్రీ బోగ అశోక్ గారు`
   },
   grandparents: {
     enPrimary: `Late Smt. Boga Narsamma &amp; Late Sri Boga Shivalingam`,
