@@ -362,7 +362,7 @@ function showerTalambralu() {
 /* ========================================================
    SMART EVENT COUNTDOWN & DAY-OF LIVE ENGINE
    ======================================================== */
-const MUHURTHAM_TIME = new Date("2026-11-26T09:15:00+05:30").getTime();
+const MUHURTHAM_TIME = new Date("2026-11-26T09:31:00+05:30").getTime();
 const HALDI_START = new Date("2026-11-25T00:00:00+05:30").getTime();
 const HALDI_END = new Date("2026-11-25T22:00:00+05:30").getTime();
 const WEDDING_DAY_START = new Date("2026-11-26T00:00:00+05:30").getTime();
@@ -391,7 +391,7 @@ function updateSmartEventBanner() {
 
     if (labelEl) labelEl.innerText = isTe ? "సుముహూర్తం సమయం" : "COUNTDOWN TO MUHURTHAM";
     headlineEl.innerText = isTe ? "పవిత్ర సుముహూర్తానికి ఎదురుచూపులు" : "Counting Down to the Sacred Muhurtham";
-    subtitleEl.innerText = isTe ? "గురువారం, 26 నవంబర్ 2026 • ఉదయం 9:15 గంటలకు | VIP గార్డెన్స్, సూరారం" : "Thursday, November 26, 2026 • 9:15 AM IST at VIP Gardens";
+    subtitleEl.innerText = isTe ? "గురువారం, 26 నవంబర్ 2026 • ఉదయం 9:31 గంటలకు | VIP గార్డెన్స్, సూరారం" : "Thursday, November 26, 2026 • 9:31 AM IST at VIP Gardens";
 
     const diff = Math.max(0, MUHURTHAM_TIME - now);
     const d = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -439,7 +439,7 @@ function updateSmartEventBanner() {
     if (now < MUHURTHAM_TIME) {
       if (labelEl) labelEl.innerText = isTe ? "నేడే వివాహ మహోత్సవం! 💍" : "TODAY IS THE WEDDING DAY! 💍";
       headlineEl.innerText = isTe ? "నేడు నూతన జీవితం ఆరంభం!" : "Today the Sacred Journey Begins!";
-      subtitleEl.innerText = isTe ? "ఈ రోజే మా వివాహ వేడుక VIP గార్డెన్స్, సూరారంలో జరుగుతుంది. సుముహూర్తం ఉదయం 9:15 గంటలకు." : "Marriage ceremony takes place today at VIP Gardens, Suraram. Muhurtham at 9:15 AM.";
+      subtitleEl.innerText = isTe ? "ఈ రోజే మా వివాహ వేడుక VIP గార్డెన్స్, సూరారంలో జరుగుతుంది. సుముహూర్తం ఉదయం 9:31 గంటలకు." : "Marriage ceremony takes place today at VIP Gardens, Suraram. Muhurtham at 9:31 AM.";
     } else {
       if (labelEl) labelEl.innerText = isTe ? "కల్యాణం సంపన్నం! 💖" : "JUST MARRIED! 💖";
       headlineEl.innerText = isTe ? "సుముహూర్తం దివ్యంగా ముగిసింది!" : "Sacred Muhurtham Completed!";
@@ -748,7 +748,7 @@ function shareViaWhatsApp() {
   const shareText = `Namaste! You are cordially invited to celebrate our auspicious wedding ceremony.
 Harika & Sampath ❤️
 
-🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad
+🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:31 AM at VIP Gardens, Hyderabad
 🎉 Reception: Friday, 27 Nov 2026, 12:00 PM at Thumma Gardens, Singarajpalle (Jangaon)
 
 View our wedding invitation: https://sampathboga97-dot.github.io/wedding-invitation/?v=card1`;
@@ -894,7 +894,7 @@ function copyAdminLink() {
 `Namaste ${name}! You are cordially invited to celebrate our auspicious wedding ceremony.
 Sarika & Sampath ❤️
 
-🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad
+🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:31 AM at VIP Gardens, Hyderabad
 🎉 Reception: Friday, 27 Nov 2026, 11:00 AM at Thumma Gardens, Singarajpalle (Jangaon)
 
 View your personalized invitation: ${url}`;
@@ -934,7 +934,7 @@ function shareAdminLinkOnWhatsApp() {
   const url = resInput ? resInput.value : window.location.href;
   const msg = encodeURIComponent(
     `Namaste ${name}! You are cordially invited to celebrate our auspicious wedding ceremony.\nSarika & Sampath ❤️\n\n` +
-    `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:15 AM at VIP Gardens, Hyderabad\n` +
+    `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:31 AM at VIP Gardens, Hyderabad\n` +
     `🎉 Reception: Friday, 27 Nov 2026, 11:00 AM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
     `View your personalized invitation: ${url}`
   );
@@ -1254,7 +1254,7 @@ function generateAndDownloadInvitationCard() {
 
   ctx.font = isTe ? 'bold 30px "Noto Sans Telugu", sans-serif' : 'bold 36px "Cinzel", serif';
   ctx.fillStyle = '#851329';
-  ctx.fillText(isTe ? 'ఉదయం 9:15 గంటలకు' : '9:15 AM', W / 2, curY);
+  ctx.fillText(isTe ? 'ఉదయం 9:31 గంటలకు' : '9:31 AM', W / 2, curY);
   curY += 45;
 
   // Kalyanam Venue Box
