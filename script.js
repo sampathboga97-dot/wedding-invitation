@@ -53,6 +53,9 @@ function selectGuestSide(side) {
   const modal = document.getElementById('sidePickerModal');
   if (modal) modal.classList.add('closed');
   triggerHeartbeatPulse();
+
+  // Start the 20-second timer right after selecting a side
+  startAutoUniteTimer();
 }
 
 function reopenSidePicker() {
@@ -168,9 +171,29 @@ function triggerHeartbeatPulse() {
   if (navigator.vibrate) navigator.vibrate([60, 40, 80]);
 }
 
+/* --- Auto-Unite Fallback Timer (20 Seconds) --- */
+let autoUniteTimer = null;
+
+function startAutoUniteTimer() {
+  if (autoUniteTimer) clearTimeout(autoUniteTimer);
+
+  autoUniteTimer = setTimeout(() => {
+    const screen = document.getElementById('handsScreen');
+    if (screen && !screen.classList.contains('dismissed') && screen.style.display !== 'none') {
+      handleHandConnect();
+    }
+  }, 20000); // 20 seconds
+}
+
 function handleHandConnect() {
   if (isTransitioning) return;
   isTransitioning = true;
+
+  // Clear timer when user clicks or when it auto-runs
+  if (autoUniteTimer) {
+    clearTimeout(autoUniteTimer);
+    autoUniteTimer = null;
+  }
 
   const screen = document.getElementById('handsScreen');
   const pulse = document.getElementById('touchPulse');
@@ -1342,6 +1365,9 @@ window.addEventListener('DOMContentLoaded', () => {
   renderSideAndNames();
   applyPersonalizedUrlParams();
   setupStoryScrollWatcher();
+
+  // Start the 20-second timer when page loads
+  startAutoUniteTimer();
 });
 
 /* ========================================================
