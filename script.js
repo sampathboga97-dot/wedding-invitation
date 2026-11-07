@@ -1122,21 +1122,16 @@ function renderFilteredRsvps() {
   if (sumEl) sumEl.innerText = activeGuestsSum;
 }
 
-/* --- Download Card Matching Active Language --- */
+/* --- Card Graphic Generator --- */
 function generateAndDownloadInvitationCard() {
+  const canvas = document.getElementById('officialInviteCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 900;
+  const H = 1680;
+  canvas.width = W;
+  canvas.height = H;
   const isTe = (currentLang === 'te');
-  
-  // Select the appropriate PNG file based on current language
-  const fileName = isTe ? 'invitation-te.png' : 'invitation-en.png';
-  const downloadName = isTe ? 'Wedding_Invitation_Telugu.png' : 'Wedding_Invitation_English.png';
-
-  const link = document.createElement('a');
-  link.href = fileName;
-  link.download = downloadName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
 
   // Background
   const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 80, W / 2, H / 2, 950);
