@@ -182,7 +182,7 @@ function startAutoUniteTimer() {
     if (screen && !screen.classList.contains('dismissed') && screen.style.display !== 'none') {
       handleHandConnect();
     }
-  }, 3000); //3 seconds
+  }, 1000); //3 seconds
 }
 
 function handleHandConnect() {
