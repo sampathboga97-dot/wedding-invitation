@@ -1126,9 +1126,9 @@ function renderFilteredRsvps() {
 function generateAndDownloadInvitationCard() {
   const isTe = (currentLang === 'te');
   
-  // Select the appropriate file based on current language
-  const fileName = isTe ? 'invitation-te.jpg' : 'invitation-en.jpg';
-  const downloadName = isTe ? 'Wedding_Invitation_Telugu.jpg' : 'Wedding_Invitation_English.jpg';
+  // Select the appropriate PNG file based on current language
+  const fileName = isTe ? 'invitation-te.png' : 'invitation-en.png';
+  const downloadName = isTe ? 'Wedding_Invitation_Telugu.png' : 'Wedding_Invitation_English.png';
 
   const link = document.createElement('a');
   link.href = fileName;
