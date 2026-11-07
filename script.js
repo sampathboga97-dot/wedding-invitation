@@ -1355,7 +1355,7 @@ function generateAndDownloadInvitationCard() {
   link.download = `Wedding_Invitation_Sarika_Sampath_${isTe ? 'Telugu' : 'English'}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
-}
+
 
 /* --- Initialization on Load --- */
 window.addEventListener('DOMContentLoaded', () => {
