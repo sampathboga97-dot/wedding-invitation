@@ -483,7 +483,7 @@ function updateSmartEventBanner() {
     if (now < RECEPTION_EVENT_TIME) {
       if (labelEl) labelEl.innerText = isTe ? "నేడు: గ్రాండ్ రిసెప్షన్ వేడుక ✨" : "TODAY: GRAND RECEPTION ✨";
       headlineEl.innerText = isTe ? "నేడు గ్రాండ్ రిసెప్షన్ వేడుక!" : "Grand Reception Celebration Today!";
-      subtitleEl.innerText = isTe ? "వేడుకలు ఉదయం 11:00 గంటలకు తుమ్మ గార్డెన్స్, జనగామ (సింగరాజుపల్లి) నందు ప్రారంభం. విందు మరియు వేడుకలకు సాదర ఆహ్వానం!" : "Celebrations begin at 11:00 AM at Thumma Gardens, Jangaon. Join us for lunch, warm blessings, and celebrations!";
+      subtitleEl.innerText = isTe ? "వేడుకలు ఉదయం 12:00 గంటలకు తుమ్మ గార్డెన్స్, జనగామ (సింగరాజుపల్లి) నందు ప్రారంభం. విందు మరియు వేడుకలకు సాదర ఆహ్వానం!" : "Celebrations begin at 12:00 AM at Thumma Gardens, Jangaon. Join us for lunch, warm blessings, and celebrations!";
     } else {
       if (labelEl) labelEl.innerText = isTe ? "రిసెప్షన్ వేడుక జరుగుతోంది 🥂" : "RECEPTION IN PROGRESS 🥂";
       headlineEl.innerText = isTe ? "తుమ్మ గార్డెన్స్‌కు సాదర సుస్వాగతం!" : "Welcome to the Grand Reception!";
@@ -918,7 +918,7 @@ function copyAdminLink() {
 Sarika & Sampath ❤️
 
 🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:31 AM at VIP Gardens, Hyderabad
-🎉 Reception: Friday, 27 Nov 2026, 11:00 AM at Thumma Gardens, Singarajpalle (Jangaon)
+🎉 Reception: Friday, 27 Nov 2026, 12:00 AM at Thumma Gardens, Singarajpalle (Jangaon)
 
 View your personalized invitation: ${url}`;
 
@@ -958,7 +958,7 @@ function shareAdminLinkOnWhatsApp() {
   const msg = encodeURIComponent(
     `Namaste ${name}! You are cordially invited to celebrate our auspicious wedding ceremony.\nSarika & Sampath ❤️\n\n` +
     `🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:31 AM at VIP Gardens, Hyderabad\n` +
-    `🎉 Reception: Friday, 27 Nov 2026, 11:00 AM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
+    `🎉 Reception: Friday, 27 Nov 2026, 12:00 AM at Thumma Gardens, Singarajpalle (Jangaon)\n\n` +
     `View your personalized invitation: ${url}`
   );
   window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
