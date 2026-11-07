@@ -771,7 +771,7 @@ function shareViaWhatsApp() {
   const shareText = `Namaste! You are cordially invited to celebrate our auspicious wedding ceremony.
 Harika(Sarika) & Sampath ❤️
 
-🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:31 AM at VIP Gardens, Hyderabad
+🗓️ Muhurtham: Thursday, 26 Nov 2026, 9:31 AM at VIP Gardens,Suraram, Hyderabad, Telangana 500055
 🎉 Reception: Friday, 27 Nov 2026, 12:00 PM at Thumma Gardens, Singarajpalle (Jangaon)
 
 View our wedding invitation: https://sampathboga97-dot.github.io/wedding-invitation/?v=card1`;
