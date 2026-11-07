@@ -1466,4 +1466,3 @@ function fallbackDefaultHotels(container, locationLabel) {
       </div>
     `;
   }
-
