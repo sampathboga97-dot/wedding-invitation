@@ -54,7 +54,7 @@ function selectGuestSide(side) {
   if (modal) modal.classList.add('closed');
   triggerHeartbeatPulse();
 
-  // Start the 20-second timer right after selecting a side
+  // Start the 15-second timer right after selecting a side
   startAutoUniteTimer();
 }
 
@@ -171,7 +171,7 @@ function triggerHeartbeatPulse() {
   if (navigator.vibrate) navigator.vibrate([60, 40, 80]);
 }
 
-/* --- Auto-Unite Fallback Timer (20 Seconds) --- */
+/* --- Auto-Unite Fallback Timer (15 Seconds) --- */
 let autoUniteTimer = null;
 
 function startAutoUniteTimer() {
@@ -182,14 +182,13 @@ function startAutoUniteTimer() {
     if (screen && !screen.classList.contains('dismissed') && screen.style.display !== 'none') {
       handleHandConnect();
     }
-  }, 1000); //3 seconds
+  }, 15000); // 15 seconds
 }
 
 function handleHandConnect() {
   if (isTransitioning) return;
   isTransitioning = true;
 
-  // Clear timer when user clicks or when it auto-runs
   if (autoUniteTimer) {
     clearTimeout(autoUniteTimer);
     autoUniteTimer = null;
@@ -237,7 +236,6 @@ function toggleAudio() {
   }
 }
 
-// 1. Play Violin immediately on card tap
 function flipStoryCard(card) {
   if (!card) return;
   card.classList.toggle('flipped');
@@ -256,7 +254,6 @@ function flipStoryCard(card) {
   }
 }
 
-// 2. Switch back to Divine Nadaswaram when scrolling away
 function switchBackToNadaswaram() {
   if (audio && isViolinPlaying) {
     isViolinPlaying = false;
@@ -272,7 +269,6 @@ function switchBackToNadaswaram() {
   }
 }
 
-// 3. Monitor scrolling in and out of the "Our Story" section
 function setupStoryScrollWatcher() {
   const storySection = document.getElementById('storySection');
   if (!storySection) return;
@@ -407,7 +403,6 @@ function updateSmartEventBanner() {
 
   const isTe = (currentLang === 'te');
 
-  // 1. BEFORE NOV 25: Standard Countdown Clock
   if (now < HALDI_START) {
     if (gridEl) gridEl.style.display = 'flex';
     if (actionContainer) actionContainer.style.display = 'none';
@@ -431,10 +426,7 @@ function updateSmartEventBanner() {
     if (elH) elH.innerText = String(h).padStart(2, '0');
     if (elM) elM.innerText = String(m).padStart(2, '0');
     if (elS) elS.innerText = String(s).padStart(2, '0');
-  }
-
-  // 2. NOV 25: Haldi Ceremony Phase
-  else if (now >= HALDI_START && now < WEDDING_DAY_START) {
+  } else if (now >= HALDI_START && now < WEDDING_DAY_START) {
     if (gridEl) gridEl.style.display = 'none';
     if (actionContainer) actionContainer.style.display = 'none';
 
@@ -447,10 +439,7 @@ function updateSmartEventBanner() {
       headlineEl.innerText = isTe ? "హల్దీ వేడుక ముగిసింది" : "Haldi Ceremony Completed";
       subtitleEl.innerText = isTe ? "రేపే పవిత్ర కల్యాణ మహోత్సవం! సూరారంలోని VIP గార్డెన్స్‌లో కలుసుకుందాం." : "Tomorrow begins the sacred journey! Get ready for the Kalyanam at VIP Gardens, Suraram.";
     }
-  }
-
-  // 3. NOV 26: Wedding Day Phase (VIP Gardens, Suraram)
-  else if (now >= WEDDING_DAY_START && now < RECEPTION_DAY_START) {
+  } else if (now >= WEDDING_DAY_START && now < RECEPTION_DAY_START) {
     if (gridEl) gridEl.style.display = 'none';
     if (actionContainer) actionContainer.style.display = 'block';
 
@@ -468,10 +457,7 @@ function updateSmartEventBanner() {
       headlineEl.innerText = isTe ? "సుముహూర్తం దివ్యంగా ముగిసింది!" : "Sacred Muhurtham Completed!";
       subtitleEl.innerText = isTe ? "సారిక & సంపత్ వివాహ బంధంతో ఒక్కటయ్యారు! నూతన దంపతులు తమ కొత్త ప్రయాణాన్ని ఆనందంగా ప్రారంభించేందుకు మీ ఆశీస్సులు అందించండి." : "Sarika & Sampath are now united in marriage! Please shower your heartfelt blessings upon the newly wedded couple for their beautiful new life together.";
     }
-  }
-
-  // 4. NOV 27: Reception Day Phase (Thumma Gardens, Jangaon)
-  else if (now >= RECEPTION_DAY_START && now < POST_WEDDING_TIME) {
+  } else if (now >= RECEPTION_DAY_START && now < POST_WEDDING_TIME) {
     if (gridEl) gridEl.style.display = 'none';
     if (actionContainer) actionContainer.style.display = 'block';
 
@@ -489,10 +475,7 @@ function updateSmartEventBanner() {
       headlineEl.innerText = isTe ? "తుమ్మ గార్డెన్స్‌కు సాదర సుస్వాగతం!" : "Welcome to the Grand Reception!";
       subtitleEl.innerText = isTe ? "వేడుకలు వైభవంగా జరుగుతున్నాయి. సారిక & సంపత్ లతో కలిసి ఈ ఆనందంలో పాలుపంచుకుంటున్నందుకు ధన్యవాదాలు!" : "Celebrations are in full swing at Thumma Gardens. Thank you for joining Sarika & Sampath on this joyful day!";
     }
-  }
-
-  // 5. AFTER NOV 27: Gratitude / Thank You Mode
-  else {
+  } else {
     if (gridEl) gridEl.style.display = 'none';
     if (actionContainer) actionContainer.style.display = 'none';
     if (labelEl) labelEl.innerText = isTe ? "హృదయపూర్వక ధన్యవాదాలు 🙏" : "FOREVER GRATEFUL 🙏";
@@ -964,7 +947,7 @@ function shareAdminLinkOnWhatsApp() {
   window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
 }
 
-/* --- URL Query Parameters Reader (?guest=Kishore+Mama&side=groom) --- */
+/* --- URL Query Parameters Reader --- */
 function applyPersonalizedUrlParams() {
   const params = new URLSearchParams(window.location.search);
   const guestName = params.get('guest');
@@ -1124,8 +1107,7 @@ function renderFilteredRsvps() {
 
 /* --- Card Graphic Generator --- */
 function generateAndDownloadInvitationCard() {
-  const canvas = document.getElementById('officialInviteCanvas');
-  if (!canvas) return;
+  const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const W = 900;
   const H = 1680;
@@ -1350,7 +1332,7 @@ function generateAndDownloadInvitationCard() {
   link.download = `Wedding_Invitation_Sarika_Sampath_${isTe ? 'Telugu' : 'English'}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
-
+}
 
 /* --- Initialization on Load --- */
 window.addEventListener('DOMContentLoaded', () => {
@@ -1366,7 +1348,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyPersonalizedUrlParams();
   setupStoryScrollWatcher();
 
-  // Start the 20-second timer when page loads
+  // Start the 15-second timer when page loads
   startAutoUniteTimer();
 });
 
@@ -1466,3 +1448,4 @@ function fallbackDefaultHotels(container, locationLabel) {
       </div>
     `;
   }
+}
