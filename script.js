@@ -182,9 +182,8 @@ function startAutoUniteTimer() {
     if (screen && !screen.classList.contains('dismissed') && screen.style.display !== 'none') {
       handleHandConnect();
     }
-  }, 8000); // 15 seconds
+  }, 8000); // 8 seconds
 }
-
 function handleHandConnect() {
   if (isTransitioning) return;
   isTransitioning = true;
@@ -205,6 +204,7 @@ function handleHandConnect() {
   if (screen) screen.classList.add('connecting');
 
   if (audio) {
+    audio.volume = 0.3; // <--- Softens the Nadaswaram automatically when hands connect
     setupWebAudioMusic();
     audio.play().then(() => {
       isPlaying = true;
@@ -228,6 +228,7 @@ function toggleAudio() {
     isPlaying = false;
     if (audioIcon) audioIcon.innerText = '🔇';
   } else {
+    audio.volume = 0.3; // <--- Sets volume to a soft, background-friendly level (30%)
     setupWebAudioMusic();
     audio.play().then(() => {
       isPlaying = true;
