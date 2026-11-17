@@ -150,6 +150,7 @@ let musicGain = null;
 const NADASWARAM_TRACK = "Divine Nadaswaram.mp3";
 const VIOLIN_TRACK = encodeURI("Violin sog From Iddarammayilatho telugu-song.mp3");
 let isViolinPlaying = false;
+let wasPlayingBeforeHidden = false; // Tracks if music was active before minimizing
 
 function setupWebAudioMusic() {
   try {
@@ -218,6 +219,7 @@ function handleHandConnect() {
     setSoftAudioVolume(); // Automatically enforces whisper-soft background volume
     audio.play().then(() => {
       isPlaying = true;
+      wasPlayingBeforeHidden = true;
       if (audioIcon) audioIcon.innerText = '🔊';
     }).catch(() => {});
   }
@@ -231,12 +233,32 @@ function handleHandConnect() {
   }, 1500);
 }
 
-/* --- Instantly Stop Music When App is Minimized, Left, or Home Button Pressed --- */
+/* --- Smart Visibility & Resume Engine --- */
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden && audio) {
-    audio.pause();
-    isPlaying = false;
-    if (audioIcon) audioIcon.innerText = '🔇';
+  if (document.hidden) {
+    // When user presses home button or switches tabs
+    if (audio && isPlaying) {
+      wasPlayingBeforeHidden = true;
+      audio.pause();
+      isPlaying = false;
+      if (audioIcon) audioIcon.innerText = '🔇';
+    } else {
+      wasPlayingBeforeHidden = false;
+    }
+  } else {
+    // When user returns back to Chrome
+    const handsScreen = document.getElementById('handsScreen');
+    const isHandsDismissed = handsScreen && (handsScreen.classList.contains('dismissed') || handsScreen.style.display === 'none');
+    
+    // Resume automatically only if invitation was already open and music was playing before
+    if (isHandsDismissed && wasPlayingBeforeHidden && audio) {
+      setupWebAudioMusic();
+      setSoftAudioVolume();
+      audio.play().then(() => {
+        isPlaying = true;
+        if (audioIcon) audioIcon.innerText = '🔊';
+      }).catch(() => {});
+    }
   }
 });
 
@@ -252,12 +274,14 @@ function toggleAudio() {
   if (isPlaying) {
     audio.pause();
     isPlaying = false;
+    wasPlayingBeforeHidden = false;
     if (audioIcon) audioIcon.innerText = '🔇';
   } else {
     setupWebAudioMusic();
     setSoftAudioVolume(); // Sets volume to a gentle, whisper-soft background level
     audio.play().then(() => {
       isPlaying = true;
+      wasPlayingBeforeHidden = true;
       if (audioIcon) audioIcon.innerText = '🔊';
     }).catch(() => {});
   }
@@ -275,6 +299,7 @@ function flipStoryCard(card) {
     setSoftAudioVolume();
     audio.play().then(() => {
       isPlaying = true;
+      wasPlayingBeforeHidden = true;
       if (audioIcon) audioIcon.innerText = '🔊';
     }).catch(err => console.log("Audio switch error:", err));
 
@@ -291,6 +316,7 @@ function switchBackToNadaswaram() {
     setSoftAudioVolume();
     audio.play().then(() => {
       isPlaying = true;
+      wasPlayingBeforeHidden = true;
       if (audioIcon) audioIcon.innerText = '🔊';
     }).catch(err => console.log("Audio revert error:", err));
 
@@ -874,6 +900,7 @@ function switchAudioTrack(trackFile, el) {
   setSoftAudioVolume();
   audio.play().then(() => {
     isPlaying = true;
+    wasPlayingBeforeHidden = true;
     if (audioIcon) audioIcon.innerText = '🔊';
   }).catch(() => {});
   
