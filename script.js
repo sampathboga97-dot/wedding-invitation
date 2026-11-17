@@ -54,7 +54,7 @@ function selectGuestSide(side) {
   if (modal) modal.classList.add('closed');
   triggerHeartbeatPulse();
 
-  // Start the 15-second timer right after selecting a side
+  // Start the timer right after selecting a side
   startAutoUniteTimer();
 }
 
@@ -158,7 +158,8 @@ function setupWebAudioMusic() {
     if (!musicSource && audio) {
       musicSource = audioCtx.createMediaElementSource(audio);
       musicGain = audioCtx.createGain();
-      musicGain.gain.setValueAtTime(0.85, audioCtx.currentTime);
+      // Set volume very low (0.05 = 5% loudness, gentle whisper-soft background hum)
+      musicGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
       musicSource.connect(musicGain);
       musicGain.connect(audioCtx.destination);
     }
@@ -167,11 +168,19 @@ function setupWebAudioMusic() {
   }
 }
 
+function setSoftAudioVolume() {
+  if (musicGain && audioCtx) {
+    musicGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+  } else if (audio) {
+    audio.volume = 0.05;
+  }
+}
+
 function triggerHeartbeatPulse() {
   if (navigator.vibrate) navigator.vibrate([60, 40, 80]);
 }
 
-/* --- Auto-Unite Fallback Timer (15 Seconds) --- */
+/* --- Auto-Unite Fallback Timer (8 Seconds) --- */
 let autoUniteTimer = null;
 
 function startAutoUniteTimer() {
@@ -184,6 +193,7 @@ function startAutoUniteTimer() {
     }
   }, 8000); // 8 seconds
 }
+
 function handleHandConnect() {
   if (isTransitioning) return;
   isTransitioning = true;
@@ -204,8 +214,8 @@ function handleHandConnect() {
   if (screen) screen.classList.add('connecting');
 
   if (audio) {
-    audio.volume = 0.2; // <--- Soft background volume automatically when opened
     setupWebAudioMusic();
+    setSoftAudioVolume(); // Automatically enforces whisper-soft background volume
     audio.play().then(() => {
       isPlaying = true;
       if (audioIcon) audioIcon.innerText = '🔊';
@@ -220,12 +230,20 @@ function handleHandConnect() {
     showerAkshintalu();
   }, 1500);
 }
-/* --- Stop Music Automatically When App is Minimized or Left --- */
+
+/* --- Instantly Stop Music When App is Minimized, Left, or Home Button Pressed --- */
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden && audio && isPlaying) {
+  if (document.hidden && audio) {
     audio.pause();
     isPlaying = false;
     if (audioIcon) audioIcon.innerText = '🔇';
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  if (audio) {
+    audio.pause();
+    isPlaying = false;
   }
 });
 
@@ -236,8 +254,8 @@ function toggleAudio() {
     isPlaying = false;
     if (audioIcon) audioIcon.innerText = '🔇';
   } else {
-    audio.volume = 0.1; // <--- Sets volume to a soft, background-friendly level (30%)
     setupWebAudioMusic();
+    setSoftAudioVolume(); // Sets volume to a gentle, whisper-soft background level
     audio.play().then(() => {
       isPlaying = true;
       if (audioIcon) audioIcon.innerText = '🔊';
@@ -254,6 +272,7 @@ function flipStoryCard(card) {
     audio.pause();
     audio.src = VIOLIN_TRACK;
     audio.currentTime = 0;
+    setSoftAudioVolume();
     audio.play().then(() => {
       isPlaying = true;
       if (audioIcon) audioIcon.innerText = '🔊';
@@ -269,6 +288,7 @@ function switchBackToNadaswaram() {
     audio.pause();
     audio.src = NADASWARAM_TRACK;
     audio.currentTime = 0;
+    setSoftAudioVolume();
     audio.play().then(() => {
       isPlaying = true;
       if (audioIcon) audioIcon.innerText = '🔊';
@@ -851,6 +871,7 @@ function closePlaylistModal() {
 function switchAudioTrack(trackFile, el) {
   if (!audio) return;
   audio.src = trackFile;
+  setSoftAudioVolume();
   audio.play().then(() => {
     isPlaying = true;
     if (audioIcon) audioIcon.innerText = '🔊';
@@ -1118,7 +1139,6 @@ function renderFilteredRsvps() {
 function generateAndDownloadInvitationCard() {
   const isTe = (currentLang === 'te');
   
-  // Select the appropriate uploaded image file based on current language
   const fileName = isTe ? 'invitation-te.png' : 'invitation-en.png';
   const downloadName = isTe ? 'Wedding_Invitation_Telugu.png' : 'Wedding_Invitation_English.png';
 
@@ -1141,7 +1161,6 @@ window.addEventListener('DOMContentLoaded', () => {
   loadCloudWishes();
   loadCloudCounter();
   
-  // Smart live banner engine runs every second
   updateSmartEventBanner();
   setInterval(updateSmartEventBanner, 1000);
 
@@ -1149,7 +1168,6 @@ window.addEventListener('DOMContentLoaded', () => {
   applyPersonalizedUrlParams();
   setupStoryScrollWatcher();
 
-  // Start the 15-second timer when page loads
   startAutoUniteTimer();
 });
 
@@ -1157,7 +1175,6 @@ window.addEventListener('DOMContentLoaded', () => {
    DYNAMIC BACKEND HOTEL FETCHER (OVERPASS / OSM API)
    ======================================================== */
 
-// Memory cache so we don't repeat API calls
 const fetchedHotelsCache = {};
 
 async function toggleAccordionWithAutoFetch(contentId, lat, lon, locationLabel) {
