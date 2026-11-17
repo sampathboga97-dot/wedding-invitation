@@ -228,7 +228,7 @@ function toggleAudio() {
     isPlaying = false;
     if (audioIcon) audioIcon.innerText = '🔇';
   } else {
-    audio.volume = 0.3; // <--- Sets volume to a soft, background-friendly level (30%)
+    audio.volume = 0.1; // <--- Sets volume to a soft, background-friendly level (30%)
     setupWebAudioMusic();
     audio.play().then(() => {
       isPlaying = true;
