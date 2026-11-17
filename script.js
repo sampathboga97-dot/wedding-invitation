@@ -204,7 +204,7 @@ function handleHandConnect() {
   if (screen) screen.classList.add('connecting');
 
   if (audio) {
-    audio.volume = 0.3; // <--- Softens the Nadaswaram automatically when hands connect
+    audio.volume = 0.2; // <--- Soft background volume automatically when opened
     setupWebAudioMusic();
     audio.play().then(() => {
       isPlaying = true;
@@ -220,6 +220,14 @@ function handleHandConnect() {
     showerAkshintalu();
   }, 1500);
 }
+/* --- Stop Music Automatically When App is Minimized or Left --- */
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && audio && isPlaying) {
+    audio.pause();
+    isPlaying = false;
+    if (audioIcon) audioIcon.innerText = '🔇';
+  }
+});
 
 function toggleAudio() {
   if (!audio) return;
