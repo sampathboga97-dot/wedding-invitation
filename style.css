@@ -540,6 +540,23 @@ body {
 .polaroid-back h4 { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--maroon-primary); margin-bottom: 8px; }
 .polaroid-back p { font-size: 0.84rem; color: #4C4238; line-height: 1.5; font-style: italic; }
 
+/* --- Prevent Photo Long-Press / Save --- */
+.polaroid-card,
+.polaroid-inner,
+.polaroid-front,
+.polaroid-back,
+.polaroid-front img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+.polaroid-front img {
+  pointer-events: none;
+}
+
 /* DIYA LIGHTING */
 .diya-section { background: radial-gradient(circle at center, #FFFDF6 0%, #FAF1DF 100%); border: 1.5px solid #E8D7B8; border-radius: 18px; padding: 12px 10px 10px; margin: 14px auto 16px; max-width: 350px; position: relative; }
 .diya-heading { font-family: 'Cinzel', serif; font-size: 1.02rem; font-weight: 800; color: var(--maroon-primary); letter-spacing: 0.8px; }
