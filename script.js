@@ -1196,8 +1196,14 @@ window.addEventListener('DOMContentLoaded', () => {
   setupStoryScrollWatcher();
 
   startAutoUniteTimer();
-});
 
+  // Prevent right-click / long-press save on story photo
+  const storySec = document.getElementById('storySection');
+  if (storySec) {
+    storySec.addEventListener('contextmenu', (e) => e.preventDefault());
+    storySec.addEventListener('dragstart', (e) => e.preventDefault());
+  }
+});
 /* ========================================================
    DYNAMIC BACKEND HOTEL FETCHER (OVERPASS / OSM API)
    ======================================================== */
